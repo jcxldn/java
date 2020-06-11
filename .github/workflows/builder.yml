@@ -5,7 +5,7 @@ on:
     branches: master
 
 jobs:
-  builder:
+  14-jre:
     runs-on: ubuntu-latest
     steps:
       -
@@ -17,10 +17,9 @@ jobs:
       - 
         name: Set up Docker Buildx
         id: buildx
-        uses: crazy-max/ghaction-docker-buildx@v3
+        uses: crazy-max/ghaction-docker-buildx@v1
         with:
-          buildx-version: latest
-          qemu-version: latest
+          version: latest
       -
         name: List Available platforms
         run: echo ${{ steps.buildx.outputs.platforms }}
@@ -33,6 +32,24 @@ jobs:
             --platform linux/amd64,linux/arm64,linux/armhf,linux/s390x \
             --output "type=image,push=true" \
             -f 14-jre.Dockerfile -t jcxldn/openjdk-alpine:14-jre .
+  14-jdk-slim:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v1
+      -
+        name: Login to Docker Hub
+        run: echo "${{ secrets.REGISTRY_PASSWORD }}" | docker login -u "${{ secrets.REGISTRY_USERNAME }}" --password-stdin
+      - 
+        name: Set up Docker Buildx
+        id: buildx
+        uses: crazy-max/ghaction-docker-buildx@v1
+        with:
+          version: latest
+      -
+        name: List Available platforms
+        run: echo ${{ steps.buildx.outputs.platforms }}
       -
         name: Run Buildx (14-jdk-slim)
         # linux/386, linux/arm temporarily disabled.
@@ -43,6 +60,24 @@ jobs:
             --platform linux/amd64,linux/arm64,linux/armhf \
             --output "type=image,push=true" \
             -f 14-jdk-slim.Dockerfile -t jcxldn/openjdk-alpine:14-jdk-slim .
+  14-jdk:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v1
+      -
+        name: Login to Docker Hub
+        run: echo "${{ secrets.REGISTRY_PASSWORD }}" | docker login -u "${{ secrets.REGISTRY_USERNAME }}" --password-stdin
+      - 
+        name: Set up Docker Buildx
+        id: buildx
+        uses: crazy-max/ghaction-docker-buildx@v1
+        with:
+          version: latest
+      -
+        name: List Available platforms
+        run: echo ${{ steps.buildx.outputs.platforms }}
       -
         name: Run Buildx (14-jdk)
         # linux/386, linux/arm temporarily disabled.
