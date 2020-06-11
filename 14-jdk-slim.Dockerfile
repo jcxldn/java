@@ -12,7 +12,7 @@ RUN mkdir -p /lib /lib64 /usr/glibc-compat/lib/locale /usr/glibc-compat/lib64 /e
 		ARCH="$(apk --print-arch)"; \
 		case "${ARCH}" in \
 		aarch64|arm64) \
-			ESUM='bf038c351337982082074ab818a6bd385c7ad31d23654a2db8cd05805fe48058'; \
+			ESUM='81ca31ad90f9bd789a2ca1753d6d83d10f4927876b4a4b9f4b1c4c8cbce85feb'; \
 			BINARY_URL='https://github.com/AdoptOpenJDK/openjdk14-binaries/releases/download/jdk-14.0.1%2B7/OpenJDK14U-jdk_aarch64_linux_hotspot_14.0.1_7.tar.gz'; \
 			ZLIB_URL='http://ports.ubuntu.com/ubuntu-ports/pool/main/z/zlib/zlib1g_1.2.11.dfsg-2ubuntu1_arm64.deb'; \
 			GLIBC_ARCH='aarch64'; \
@@ -26,7 +26,7 @@ RUN mkdir -p /lib /lib64 /usr/glibc-compat/lib/locale /usr/glibc-compat/lib64 /e
 			;; \
 			# Download glibc and link
 		armhf|armv7l|armv7) \
-			ESUM='277ae66d1db7613a7f02b1cbfc9acd8f5f6208eac0e61828d40d5a513b40e406'; \
+			ESUM='458d091756500dc3013737aa182a14752b3d4ffc358d09532201874ffb8cae22'; \
 			BINARY_URL='https://github.com/AdoptOpenJDK/openjdk14-binaries/releases/download/jdk-14.0.1%2B7/OpenJDK14U-jdk_arm_linux_hotspot_14.0.1_7.tar.gz'; \
 			ZLIB_URL='http://ports.ubuntu.com/ubuntu-ports/pool/main/z/zlib/zlib1g_1.2.11.dfsg-2ubuntu1_armhf.deb'; \
 			GLIBC_ARCH='armhf'; \
@@ -39,7 +39,7 @@ RUN mkdir -p /lib /lib64 /usr/glibc-compat/lib/locale /usr/glibc-compat/lib64 /e
 			}; \
 			;; \
 		ppc64el|ppc64le) \
-			ESUM='8af51efdd25d93b120ee9ef22e2584cf8bf9441108fa0396a0ac9c5de86ec119'; \
+			ESUM='bfdd77112d81256d4e1a859a465dd4dcb670019a5d6cf8260c30e24a0e5947e4'; \
 			BINARY_URL='https://github.com/AdoptOpenJDK/openjdk14-binaries/releases/download/jdk-14.0.1%2B7/OpenJDK14U-jdk_ppc64le_linux_hotspot_14.0.1_7.tar.gz'; \
 			ZLIB_URL='http://ports.ubuntu.com/ubuntu-ports/pool/main/z/zlib/zlib1g_1.2.11.dfsg-2ubuntu1_ppc64el.deb'; \
 			GLIBC_ARCH='ppc64le'; \
@@ -55,7 +55,7 @@ RUN mkdir -p /lib /lib64 /usr/glibc-compat/lib/locale /usr/glibc-compat/lib64 /e
 			}; \
 			;; \
 		s390x) \
-			ESUM='97b15611f4238a20fde975cba5144477f06bb8416964ae79e2109778c25fa654'; \
+			ESUM='c13545924e92cb9d495282e95270f299a28d5466f9741c67791f131c38ebbd0c'; \
 			BINARY_URL='https://github.com/AdoptOpenJDK/openjdk14-binaries/releases/download/jdk-14.0.1%2B7/OpenJDK14U-jdk_s390x_linux_hotspot_14.0.1_7.tar.gz'; \
 			ZLIB_URL='http://ports.ubuntu.com/ubuntu-ports/pool/main/z/zlib/zlib1g_1.2.11.dfsg-2ubuntu1_s390x.deb'; \
 			GLIBC_ARCH='s390x'; \
@@ -71,7 +71,7 @@ RUN mkdir -p /lib /lib64 /usr/glibc-compat/lib/locale /usr/glibc-compat/lib64 /e
 			}; \
 			;; \
 		amd64|x86_64) \
-			ESUM='3f8a4d5939a66cadf9846bbae6392644165f75063ae31998764916da13810fca'; \
+			ESUM='9ddf9b35996fbd784a53fff3e0d59920a7d5acf1a82d4c8d70906957ac146cd1'; \
 			BINARY_URL='https://github.com/AdoptOpenJDK/openjdk14-binaries/releases/download/jdk-14.0.1%2B7/OpenJDK14U-jdk_x64_linux_hotspot_14.0.1_7.tar.gz'; \
 			ZLIB_URL='http://archive.ubuntu.com/ubuntu/pool/main/z/zlib/zlib1g_1.2.11.dfsg-2ubuntu1_amd64.deb'; \
 			GLIBC_ARCH='x86_64'; \
@@ -104,11 +104,6 @@ RUN mkdir -p /lib /lib64 /usr/glibc-compat/lib/locale /usr/glibc-compat/lib64 /e
 		cd /opt/java/openjdk; \
 		tar -xf /tmp/openjdk.tar.gz --strip-components=1; \
 		
-		# OpenJDK - Slim Java
-		apk add --no-cache --virtual .build-deps bash binutils; \
-		/usr/local/bin/slim-java.sh /opt/java/openjdk; \
-		apk del --purge .build-deps; \
-		
 		# Download zlib
 		mkdir -p /tmp/zlib; \
 		cd /tmp/zlib; \
@@ -116,6 +111,12 @@ RUN mkdir -p /lib /lib64 /usr/glibc-compat/lib/locale /usr/glibc-compat/lib64 /e
 		ar vx zlib.deb; \
 		tar xvf data.tar.xz; \
 		mv lib/$(ls lib)/* /usr/glibc-compat/lib/; \
+		
+		# OpenJDK - Slim Java
+		chmod +x /usr/local/bin/slim-java.sh; \
+		apk add --no-cache --virtual .build-deps bash binutils; \
+		/usr/local/bin/slim-java.sh /opt/java/openjdk/; \
+		apk del --purge .build-deps; \
 		
 		# Run strip on stuff
 		strip /usr/glibc-compat/sbin/**; \
