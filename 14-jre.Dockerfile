@@ -103,6 +103,7 @@ RUN mkdir -p /lib /lib64 /usr/glibc-compat/lib/locale /usr/glibc-compat/lib64 /e
 		mkdir -p /opt/java/openjdk; \
 		cd /opt/java/openjdk; \
 		tar -xf /tmp/openjdk.tar.gz --strip-components=1; \
+		
 		# Download zlib
 		mkdir -p /tmp/zlib; \
 		cd /tmp/zlib; \
@@ -110,6 +111,29 @@ RUN mkdir -p /lib /lib64 /usr/glibc-compat/lib/locale /usr/glibc-compat/lib64 /e
 		ar vx zlib.deb; \
 		tar xvf data.tar.xz; \
 		mv lib/$(ls lib)/* /usr/glibc-compat/lib/; \
+		
+		# Run strip on stuff
+		strip /usr/glibc-compat/sbin/**; \
+		strip /usr/glibc-compat/lib64/**; \
+		strip /usr/glibc-compat/lib/** || echo 'Probably done with errors'; \
+		strip /usr/glibc-compat/lib/*/* || echo 'Probably done with errors'; \
+		
+		# Remove unused files (https://github.com/sgerrand/alpine-pkg-glibc/blob/master/APKBUILD)
+		rm "$pkgdir"/usr/glibc-compat/etc/rpc; \
+		rm -rf /usr/glibc-compat/bin; \
+		rm -rf /usr/glibc-compat/sbin; \
+		rm -rf /usr/glibc-compat/lib/gconv; \
+		rm -rf /usr/glibc-compat/lib/getconf; \
+		rm -rf /usr/glibc-compat/lib/audit; \
+		rm -rf /usr/glibc-compat/share; \
+		rm -rf /usr/glibc-compat/var; \
+		
+		# Remove object files and static libraries. (https://blog.gilliard.lol/2018/11/05/alpine-jdk11-images.html)
+		rm -rf /usr/glibc-compat/*.o; \
+		rm -rf /usr/glibc-compat/*.a; \
+		rm -rf /usr/glibc-compat/*/*.o; \
+		rm -rf /usr/glibc-compat/*/*.a; \
+		
 		# Cleaning up...
 		apk del --purge .fetch-deps; \
 		rm -rf /var/cache/apk/*; \
