@@ -43,3 +43,13 @@ jobs:
             --platform linux/amd64,linux/arm64,linux/armhf \
             --output "type=image,push=true" \
             -f 14-jdk-slim.Dockerfile -t jcxldn/openjdk-alpine:14-jdk-slim .
+      -
+        name: Run Buildx (14-jdk)
+        # linux/386, linux/arm temporarily disabled.
+        # linus/ppc64le currently does not work due to an unknown privilege violation. (might be qemu?)
+        # linux/s390x throws SIGILL, so has been disabled.
+        run: |
+          docker buildx build \
+            --platform linux/amd64,linux/arm64,linux/armhf \
+            --output "type=image,push=true" \
+            -f 14-jdk.Dockerfile -t jcxldn/openjdk-alpine:14-jdk .
