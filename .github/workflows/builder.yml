@@ -5,7 +5,7 @@ on:
     branches: master
 
 jobs:
-  14-jre:
+  job-14-jre:
     runs-on: ubuntu-latest
     steps:
       -
@@ -32,7 +32,7 @@ jobs:
             --platform linux/amd64,linux/arm64,linux/armhf,linux/s390x \
             --output "type=image,push=true" \
             -f 14-jre.Dockerfile -t jcxldn/openjdk-alpine:14-jre .
-  14-jdk-slim:
+  job-14-jdk-slim:
     runs-on: ubuntu-latest
     steps:
       -
@@ -60,7 +60,7 @@ jobs:
             --platform linux/amd64,linux/arm64,linux/armhf \
             --output "type=image,push=true" \
             -f 14-jdk-slim.Dockerfile -t jcxldn/openjdk-alpine:14-jdk-slim .
-  14-jdk:
+  job-14-jdk:
     runs-on: ubuntu-latest
     steps:
       -
