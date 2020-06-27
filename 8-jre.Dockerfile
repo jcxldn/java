@@ -35,7 +35,8 @@ RUN mkdir -p /lib /lib64 /usr/glibc-compat/lib/locale /usr/glibc-compat/lib64 /e
 				ln -s /usr/glibc-compat/lib/ld-linux-armhf.so.3 /lib64/ld-linux-armhf.so.3; \
 				ln -s /usr/glibc-compat/lib/ld-linux-armhf.so.3 /usr/glibc-compat/lib64/ld-linux-armhf.so.3; \
 				ln -s /usr/glibc-compat/etc/ld.so.cache /etc/ld.so.cache; \
-				# ln -sfn /lib/libc.musl-x86_64.so.1 /usr/glibc-compat/lib; \
+				# Link musl
+				ln -sfn /lib/libc.musl-armv7.so.1 /usr/glibc-compat/lib; \
 				# s390x, armv7 - install libffi, libgcc
 				apk add --no-cache libffi libgcc; \
 				ln -s /usr/lib/libffi.so.7 /usr/lib/libffi.so.6; \
@@ -69,7 +70,8 @@ RUN mkdir -p /lib /lib64 /usr/glibc-compat/lib/locale /usr/glibc-compat/lib64 /e
 				ln -s /usr/glibc-compat/lib/ld-linux-s390x.so.2 /lib64/ld-linux-s390x.so.2; \
 				ln -s /usr/glibc-compat/lib/ld-linux-s390x.so.2/usr/glibc-compat/lib64/ld-linux-s390x.so.2; \
 				ln -s /usr/glibc-compat/etc/ld.so.cache /etc/ld.so.cache; \
-				# ln -sfn /lib/libc.musl-x86_64.so.1 /usr/glibc-compat/lib; \
+				# Link musl
+				ln -sfn /lib/libc.musl-s390x.so.1 /usr/glibc-compat/lib; \
 				# Special case for s390x.
 				ln -s /usr/glibc-compat/lib/ld64.so.1 /lib/ld64.so.1; \
 				ln -s /usr/glibc-compat/lib/ld64.so.1 /lib64/ld64.so.1; \
