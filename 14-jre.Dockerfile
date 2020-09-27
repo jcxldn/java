@@ -29,7 +29,10 @@ RUN mkdir -p /lib /lib64 /usr/glibc-compat/lib/locale /usr/glibc-compat/lib64 /e
 			ESUM='277ae66d1db7613a7f02b1cbfc9acd8f5f6208eac0e61828d40d5a513b40e406'; \
 			BINARY_URL='https://github.com/AdoptOpenJDK/openjdk14-binaries/releases/download/jdk-14.0.1%2B7/OpenJDK14U-jre_arm_linux_hotspot_14.0.1_7.tar.gz'; \
 			ZLIB_URL='http://ports.ubuntu.com/ubuntu-ports/pool/main/z/zlib/zlib1g_1.2.11.dfsg-2ubuntu1_armhf.deb'; \
-			GLIBC_ARCH='armhf'; \
+			# Override GLIBC Version - since 2.28 there is a bug blocking it being used on QEMU
+			# https://bugs.launchpad.net/qemu/+bug/1805913
+			GLIBC_VERSION="2.27-r1"; \
+			GLIBC_ARCH='arm-linux-gnueabihf'; \
 			glibc_setup () { \
 				ln -s /usr/glibc-compat/lib/ld-linux-armhf.so.3 /lib/ld-linux-armhf.so.3; \
 				ln -s /usr/glibc-compat/lib/ld-linux-armhf.so.3 /lib64/ld-linux-armhf.so.3; \
