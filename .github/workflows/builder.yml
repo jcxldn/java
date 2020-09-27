@@ -1,10 +1,13 @@
-name: builder
+name: docker
 
 on: push
 
 jobs:
-  job-14-jre:
+   buildx:
     runs-on: ubuntu-latest
+    strategy:
+      matrix: 
+        version: ["14-jre", "8-jre", "14-jdk-slim", "14-jdk", "8-jdk"]
     steps:
       -
         name: Checkout
@@ -23,126 +26,12 @@ jobs:
         name: List Available platforms
         run: echo ${{ steps.buildx.outputs.platforms }}
       -
-        name: Run Buildx (14-jre)
-        # linux/386, linux/arm temporarily disabled.
-        # linus/ppc64le currently does not work due to an unknown privilege violation. (might be qemu?)
+        name: Install yq (mikefarah, go)
+        run: sudo su -c 'wget https://github.com/mikefarah/yq/releases/download/3.4.0/yq_linux_amd64 -O /usr/bin/yq && chmod +x /usr/bin/yq'
+      -
+        name: Run Buildx (${{ matrix.version }})
         run: |
           docker buildx build \
-            --platform linux/amd64,linux/arm64,linux/armhf,linux/s390x \
+            --platform $(yq r platform-matrix.yml ${{ matrix.version }}) \
             --output "type=image,push=$([[ $GITHUB_REF == "refs/heads/master" ]] && echo true || echo false)" \
-            -f 14-jre.Dockerfile -t jcxldn/openjdk-alpine:14-jre .
-  job-14-jdk-slim:
-    runs-on: ubuntu-latest
-    steps:
-      -
-        name: Checkout
-        uses: actions/checkout@v1
-      -
-        name: Login to Docker Hub
-        run: echo "${{ secrets.REGISTRY_PASSWORD }}" | docker login -u "${{ secrets.REGISTRY_USERNAME }}" --password-stdin
-        if: github.ref == 'refs/heads/master'
-      - 
-        name: Set up Docker Buildx
-        id: buildx
-        uses: crazy-max/ghaction-docker-buildx@v1
-        with:
-          version: latest
-      -
-        name: List Available platforms
-        run: echo ${{ steps.buildx.outputs.platforms }}
-      -
-        name: Run Buildx (14-jdk-slim)
-        # linux/386, linux/arm temporarily disabled.
-        # linus/ppc64le currently does not work due to an unknown privilege violation. (might be qemu?)
-        # linux/s390x throws SIGILL, so has been disabled.
-        run: |
-          docker buildx build \
-            --platform linux/amd64,linux/arm64,linux/armhf \
-            --output "type=image,push=$([[ $GITHUB_REF == "refs/heads/master" ]] && echo true || echo false)" \
-            -f 14-jdk-slim.Dockerfile -t jcxldn/openjdk-alpine:14-jdk-slim .
-  job-14-jdk:
-    runs-on: ubuntu-latest
-    steps:
-      -
-        name: Checkout
-        uses: actions/checkout@v1
-      -
-        name: Login to Docker Hub
-        run: echo "${{ secrets.REGISTRY_PASSWORD }}" | docker login -u "${{ secrets.REGISTRY_USERNAME }}" --password-stdin
-        if: github.ref == 'refs/heads/master'
-      - 
-        name: Set up Docker Buildx
-        id: buildx
-        uses: crazy-max/ghaction-docker-buildx@v1
-        with:
-          version: latest
-      -
-        name: List Available platforms
-        run: echo ${{ steps.buildx.outputs.platforms }}
-      -
-        name: Run Buildx (14-jdk)
-        # linux/386, linux/arm temporarily disabled.
-        # linus/ppc64le currently does not work due to an unknown privilege violation. (might be qemu?)
-        # linux/s390x throws SIGILL, so has been disabled.
-        run: |
-          docker buildx build \
-            --platform linux/amd64,linux/arm64,linux/armhf \
-            --output "type=image,push=$([[ $GITHUB_REF == "refs/heads/master" ]] && echo true || echo false)" \
-            -f 14-jdk.Dockerfile -t jcxldn/openjdk-alpine:14-jdk .
-  job-8-jre:
-    runs-on: ubuntu-latest
-    steps:
-      -
-        name: Checkout
-        uses: actions/checkout@v1
-      -
-        name: Login to Docker Hub
-        run: echo "${{ secrets.REGISTRY_PASSWORD }}" | docker login -u "${{ secrets.REGISTRY_USERNAME }}" --password-stdin
-        if: github.ref == 'refs/heads/master'
-      - 
-        name: Set up Docker Buildx
-        id: buildx
-        uses: crazy-max/ghaction-docker-buildx@v1
-        with:
-          version: latest
-      -
-        name: List Available platforms
-        run: echo ${{ steps.buildx.outputs.platforms }}
-      -
-        name: Run Buildx (8-jre)
-        # linux/386, linux/arm temporarily disabled.
-        # linus/ppc64le currently does not work due to an unknown privilege violation. (might be qemu?)
-        run: |
-          docker buildx build \
-            --platform linux/amd64,linux/arm64,linux/armhf,linux/s390x \
-            --output "type=image,push=$([[ $GITHUB_REF == "refs/heads/master" ]] && echo true || echo false)" \
-            -f 8-jre.Dockerfile -t jcxldn/openjdk-alpine:8-jre .
-  job-8-jdk:
-    runs-on: ubuntu-latest
-    steps:
-      -
-        name: Checkout
-        uses: actions/checkout@v1
-      -
-        name: Login to Docker Hub
-        run: echo "${{ secrets.REGISTRY_PASSWORD }}" | docker login -u "${{ secrets.REGISTRY_USERNAME }}" --password-stdin
-        if: github.ref == 'refs/heads/master'
-      - 
-        name: Set up Docker Buildx
-        id: buildx
-        uses: crazy-max/ghaction-docker-buildx@v1
-        with:
-          version: latest
-      -
-        name: List Available platforms
-        run: echo ${{ steps.buildx.outputs.platforms }}
-      -
-        name: Run Buildx (8-jdk)
-        # linux/386, linux/arm temporarily disabled.
-        # linus/ppc64le currently does not work due to an unknown privilege violation. (might be qemu?)
-        # linux/s390x throws SIGILL, so has been disabled.
-        run: |
-          docker buildx build \
-            --platform linux/amd64,linux/arm64,linux/armhf \
-            --output "type=image,push=$([[ $GITHUB_REF == "refs/heads/master" ]] && echo true || echo false)" \
-            -f 8-jdk.Dockerfile -t jcxldn/openjdk-alpine:8-jdk .
+            -f ${{ matrix.version }}.Dockerfile -t jcxldn/openjdk-alpine:${{ matrix.version }} .
