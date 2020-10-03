@@ -5,6 +5,7 @@ on: push
 jobs:
    buildx:
     runs-on: ubuntu-latest
+    if: "! contains(toJSON(github.event.commits.*.message), '[ci skip]')"
     strategy:
       matrix: 
         version: ["14-jre", "8-jre", "14-jdk-slim", "14-jdk", "8-jdk"]
