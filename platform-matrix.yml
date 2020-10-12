@@ -5,6 +5,7 @@
 
 
 # JREs
+15-jre: "linux/amd64,linux/arm64,linux/armhf,linux/s390x"
 14-jre: "linux/amd64,linux/arm64,linux/armhf,linux/s390x"
 8-jre: "linux/amd64,linux/arm64,linux/armhf,linux/s390x"
 
@@ -17,5 +18,7 @@
 # linux/s390x throws SIGILL, so has been disabled.
 # -------------------------
 14-jdk-slim: "linux/amd64,linux/arm64,linux/armhf"
+
+15-jdk: "linux/amd64,linux/arm64,linux/armhf"
 14-jdk: "linux/amd64,linux/arm64,linux/armhf"
 8-jdk: "linux/amd64,linux/arm64,linux/armhf"
