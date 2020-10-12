@@ -8,7 +8,7 @@ jobs:
     if: "!contains(github.event.head_commit.message, 'ci skip')"
     strategy:
       matrix: 
-        version: ["15-jre", "14-jre", "8-jre", "14-jdk-slim", "15-jdk", "14-jdk", "8-jdk"]
+        version: ["15-jre", "14-jre", "11-jre", "8-jre", "14-jdk-slim", "15-jdk", "14-jdk", "11-jdk", "8-jdk"]
     steps:
       -
         name: Checkout

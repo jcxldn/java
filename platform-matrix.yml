@@ -7,6 +7,7 @@
 # JREs
 15-jre: "linux/amd64,linux/arm64,linux/armhf,linux/s390x"
 14-jre: "linux/amd64,linux/arm64,linux/armhf,linux/s390x"
+11-jre: "linux/amd64,linux/arm64,linux/armhf,linux/s390x"
 8-jre: "linux/amd64,linux/arm64,linux/armhf,linux/s390x"
 
 
@@ -21,4 +22,5 @@
 
 15-jdk: "linux/amd64,linux/arm64,linux/armhf"
 14-jdk: "linux/amd64,linux/arm64,linux/armhf"
+11-jdk: "linux/amd64,linux/arm64,linux/armhf"
 8-jdk: "linux/amd64,linux/arm64,linux/armhf"
