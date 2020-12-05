@@ -17,16 +17,23 @@ jobs:
         name: Login to Docker Hub
         run: echo "${{ secrets.REGISTRY_PASSWORD }}" | docker login -u "${{ secrets.REGISTRY_USERNAME }}" --password-stdin
         if: github.ref == 'refs/heads/master'
-      - 
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+        with:
+          platforms: all
+      -
         name: Set up Docker Buildx
         id: buildx
-        uses: crazy-max/ghaction-docker-buildx@v3.3.0
+        uses: docker/setup-buildx-action@v1
+        with:
+          version: latest
       -
         name: List Available platforms
         run: echo ${{ steps.buildx.outputs.platforms }}
       -
         name: Install yq (mikefarah, go)
-        run: sudo su -c 'wget https://github.com/mikefarah/yq/releases/download/3.4.0/yq_linux_amd64 -O /usr/bin/yq && chmod +x /usr/bin/yq'
+        run: sudo su -c 'wget https://github.com/mikefarah/yq/releases/download/3.4.1/yq_linux_amd64 -O /usr/bin/yq && chmod +x /usr/bin/yq'
       -
         name: Run Buildx (${{ matrix.version }})
         run: |
