@@ -59,7 +59,7 @@ RUN mkdir -p /lib /lib64 /usr/glibc-compat/lib/locale /usr/glibc-compat/lib64 /e
                 # Download stuff
                 echo "[OpenJDK 7/8] Linking libffi, libgcc to fix build..."; \
                 # Link musl
-				ln -sfn /lib/libc.musl-s390x.so.1 /usr/glibc-compat/lib; \
+				ln -sfn /lib/libc.musl-armv7.so.1 /usr/glibc-compat/lib; \
 				# OpenJDK 7 + 8 | s390x, armv7 - install libffi, libgcc
 				apk add --no-cache libffi libgcc; \
 				ln -s /usr/lib/libffi.so.7 /usr/lib/libffi.so.6; \
