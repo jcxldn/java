@@ -166,15 +166,15 @@ RUN mkdir -p /lib /lib64 /usr/glibc-compat/lib/locale /usr/glibc-compat/lib64 /e
         if [ "$SLIM" = "yes" ]; \
         then \
         # Download stuff
-        echo "[Java Slim Build] Downloading..." \
-        wget https://raw.githubusercontent.com/Prouser123/openjdk-alpine-docker/master/slim-java-14/slim-java.sh \
-        wget https://raw.githubusercontent.com/Prouser123/openjdk-alpine-docker/master/slim-java-14/slim-java_bin_del.list \
-        wget https://raw.githubusercontent.com/Prouser123/openjdk-alpine-docker/master/slim-java-14/slim-java_jmod_del.list \
-        wget https://raw.githubusercontent.com/Prouser123/openjdk-alpine-docker/master/slim-java-14/slim-java_lib_del.list \
-        wget https://raw.githubusercontent.com/Prouser123/openjdk-alpine-docker/master/slim-java-14/slim-java_lib_del.list \
-        wget https://raw.githubusercontent.com/Prouser123/openjdk-alpine-docker/master/slim-java-14/slim-java_rtjar_keep.list \
+        echo "[Java Slim Build] Downloading..."; \
+        wget https://raw.githubusercontent.com/Prouser123/openjdk-alpine-docker/master/slim-java-14/slim-java.sh; \
+        wget https://raw.githubusercontent.com/Prouser123/openjdk-alpine-docker/master/slim-java-14/slim-java_bin_del.list; \
+        wget https://raw.githubusercontent.com/Prouser123/openjdk-alpine-docker/master/slim-java-14/slim-java_jmod_del.list; \
+        wget https://raw.githubusercontent.com/Prouser123/openjdk-alpine-docker/master/slim-java-14/slim-java_lib_del.list; \
+        wget https://raw.githubusercontent.com/Prouser123/openjdk-alpine-docker/master/slim-java-14/slim-java_lib_del.list; \
+        wget https://raw.githubusercontent.com/Prouser123/openjdk-alpine-docker/master/slim-java-14/slim-java_rtjar_keep.list; \
 		# Strip java
-        echo "[Java Slim Build] Stripping..." \
+        echo "[Java Slim Build] Stripping..."; \
         chmod +x /usr/local/bin/slim-java.sh; \
 		apk add --no-cache --virtual .build-deps bash binutils; \
 		/usr/local/bin/slim-java.sh /opt/java/openjdk/; \
