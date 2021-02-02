@@ -54,5 +54,6 @@ jobs:
             --env VERSION=$(yq r platform-matrix.yml ${{ matrix.version }}).version \
         #   Build Modifier Env
             --env SLIM=$(yq r platform-matrix.yml ${{ matrix.version }}).slim \
+            --env JDK78FIX=$(yq r platform-matrix.yml ${{ matrix.version }}).jdk78fix \
         #   ----------
             -f Dockerfile -t jcxldn/openjdk-alpine:${{ matrix.version }} .
