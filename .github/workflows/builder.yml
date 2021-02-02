@@ -51,6 +51,8 @@ jobs:
             --env REPO=$(yq r platform-matrix.yml ${{ matrix.version }}).repo \
             --env TYPE=$(yq r platform-matrix.yml ${{ matrix.version }}).type \
             --env TAG=$(yq r platform-matrix.yml ${{ matrix.version }}).tag \
-            --env VERSION=$(yq r platform-matrix.yml ${{ matrix.version }}).version \ 
+            --env VERSION=$(yq r platform-matrix.yml ${{ matrix.version }}).version \
+        #   Build Modifier Env
+            --env SLIM=$(yq r platform-matrix.yml ${{ matrix.version }}).slim \
         #   ----------
             -f Dockerfile -t jcxldn/openjdk-alpine:${{ matrix.version }} .

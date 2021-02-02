@@ -11,6 +11,7 @@
   type: "OpenJDK15U-jre"
   tag: "jdk-15.0.1%2B9"
   version: "15.0.1_9"
+  slim: "no"
   esums:
     arm64: "9eecdd39239545b922878abf51015030ba9aed4dda5c4574ddbc669a71ddab31"
     armv7: "f289d1b9fc05099889eaa9a52d352275d44698f3448153cc2ef05f2fa1c04cca"
@@ -24,6 +25,7 @@
   type: "OpenJDK14U-jre"
   tag: "jdk-14.0.2%2B12"
   version: "14.0.2_12"
+  slim: "no"
   esums:
     arm64: "2b749ceead19d68dd7e3c28b143dc4f94bb0916378a98b7346e851318ea4da84"
     armv7: "4468ecf74956783ae41a46e8ba023c003c69e4d111622944aad1af764a1bc4af"
@@ -37,6 +39,7 @@
   type: "OpenJDK11U-jre"
   tag: "jdk-11.0.8%2B10"
   version: "11.0.8_10"
+  slim: "no"
   esums:
     arm64: "286c869dbaefda9b470ae71d1250fdecf9f06d8da97c0f7df9021d381d749106"
     armv7: "ffa627b2d0c6001448bb8f1f24f7c9921dad37e67637f6ed0a9a479e680a3393"
@@ -50,6 +53,7 @@
   type: "OpenJDK8U-jre"
   tag: "jdk8u265-b01"
   version: "8u265b01"
+  slim: "no"
   esums:
     arm64: "2f9c5be1bf704f1233bcf96b8c02524c14dc4d43dc80c4926856091961b79948"
     armv7: "4ac2503725b2729ec245dbdb000b2486f9c73ae86860c9525f9ac822ec81f0d6"
@@ -68,6 +72,7 @@
   type: "OpenJDK14U-jdk"
   tag: "jdk-14.0.2%2B12"
   version: "14.0.2_12"
+  slim: "yes"
   esums:
     arm64: "ee87e9f03b1fbe6f328429b78fe1a9f44900026d220c90dfd747fe0bcd62d904"
     armv7: "65f193496c6977ba7aed1563edc4b5be091b5ff03e3d790074bb4e389a034b36"
@@ -81,6 +86,7 @@
   type: "OpenJDK15U-jdk"
   tag: "jdk-15.0.1%2B9"
   version: "15.0.1_9"
+  slim: "no"
   esums:
     arm64: "84398a1566d66ee5a88f3326fb7f0b70504eb510190f8f798bdb386481a3900e"
     armv7: "bef5e9f4ab8a87645fa2b3d0ffb9f2b97374caa03cd1296597e8c86e8360d5a2"
@@ -94,6 +100,7 @@
   type: "OpenJDK14U-jdk"
   tag: "jdk-14.0.2%2B12"
   version: "14.0.2_12"
+  slim: "no"
   esums:
     arm64: "ee87e9f03b1fbe6f328429b78fe1a9f44900026d220c90dfd747fe0bcd62d904"
     armv7: "65f193496c6977ba7aed1563edc4b5be091b5ff03e3d790074bb4e389a034b36"
@@ -107,6 +114,7 @@
   type: "OpenJDK11U-jdk"
   tag: "jdk-11.0.8%2B10"
   version: "11.0.8_10"
+  slim: "no"
   esums:
     arm64: "fb27ea52ed901c14c9fe8ad2fc10b338b8cf47d6762571be1fe3fb7c426bab7c"
     armv7: "d00370967e4657e137cc511e81d6accbfdb08dba91e6268abef8219e735fbfc5"
@@ -120,6 +128,7 @@
   type: "OpenJDK8U-jdk"
   tag: "jdk8u265-b01"
   version: "8u265b01"
+  slim: "no"
   esums:
     arm64: "87d16dac293d2a9abbb559a277bfaded702f28d1bfdc526f8613bb9cfed84a12"
     armv7: "dc3405aab81f422b7721f665c76371bd7b03c291eea89cd110a82d8bcf07809a"
