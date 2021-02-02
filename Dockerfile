@@ -129,6 +129,7 @@ RUN mkdir -p /lib /lib64 /usr/glibc-compat/lib/locale /usr/glibc-compat/lib64 /e
 	wget https://raw.githubusercontent.com/sgerrand/alpine-pkg-glibc/master/nsswitch.conf -O /etc/nsswitch.conf; \
 		
 		# Download OpenJDK
+        echo $BINARY_URL; \
 		curl -LfsSo /tmp/openjdk.tar.gz $BINARY_URL; \
 		echo "${ESUM} */tmp/openjdk.tar.gz" | sha256sum -c -; \
 		mkdir -p /opt/java/openjdk; \
