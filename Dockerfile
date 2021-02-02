@@ -43,7 +43,7 @@ RUN mkdir -p /lib /lib64 /usr/glibc-compat/lib/locale /usr/glibc-compat/lib64 /e
             }; \
             java78fix () { \
                 # Download stuff
-                echo "[OpenJDK 7/8] Linking libffi, libgcc to fix build..." \
+                echo "[OpenJDK 7/8] Linking libffi, libgcc to fix build..."; \
                 # Link musl
 				ln -sfn /lib/libc.musl-s390x.so.1 /usr/glibc-compat/lib; \
 				# OpenJDK 7 + 8 | s390x, armv7 - install libffi, libgcc
@@ -51,7 +51,7 @@ RUN mkdir -p /lib /lib64 /usr/glibc-compat/lib/locale /usr/glibc-compat/lib64 /e
 				ln -s /usr/lib/libffi.so.7 /usr/lib/libffi.so.6; \
 				ln -s /usr/lib/libffi.so.6 /usr/glibc-compat/lib/libffi.so.6; \
 				ln -s /usr/lib/libgcc_s.so.1 /usr/glibc-compat/lib/libgcc_s.so.1; \
-                echo "[OpenJDK 7/8] Done!" \
+                echo "[OpenJDK 7/8] Done!"; \
 			}; \
 			;; \
 		ppc64el|ppc64le) \
@@ -87,7 +87,7 @@ RUN mkdir -p /lib /lib64 /usr/glibc-compat/lib/locale /usr/glibc-compat/lib64 /e
             }; \
             java78fix () { \
                 # Download stuff
-                echo "[OpenJDK 7/8] Linking libffi, libgcc to fix build..." \
+                echo "[OpenJDK 7/8] Linking libffi, libgcc to fix build..."; \
                 # Link musl
 				ln -sfn /lib/libc.musl-s390x.so.1 /usr/glibc-compat/lib; \
 				# OpenJDK 7 + 8 | s390x, armv7 - install libffi, libgcc
@@ -95,7 +95,7 @@ RUN mkdir -p /lib /lib64 /usr/glibc-compat/lib/locale /usr/glibc-compat/lib64 /e
 				ln -s /usr/lib/libffi.so.7 /usr/lib/libffi.so.6; \
 				ln -s /usr/lib/libffi.so.6 /usr/glibc-compat/lib/libffi.so.6; \
 				ln -s /usr/lib/libgcc_s.so.1 /usr/glibc-compat/lib/libgcc_s.so.1; \
-                echo "[OpenJDK 7/8] Done!" \
+                echo "[OpenJDK 7/8] Done!"; \
 			}; \
 			;; \
 		amd64|x86_64) \
