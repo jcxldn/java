@@ -143,6 +143,7 @@ RUN mkdir -p /lib /lib64 /usr/glibc-compat/lib/locale /usr/glibc-compat/lib64 /e
 		# Download OpenJDK
         echo "Downloading OpenJDK with URL: $BINARY_URL"; \
 		curl -LfsSo /tmp/openjdk.tar.gz $BINARY_URL; \
+        echo "Verifing download with checksum: $ESUM"; \
 		echo "${ESUM} */tmp/openjdk.tar.gz" | sha256sum -c -; \
 		mkdir -p /opt/java/openjdk; \
 		cd /opt/java/openjdk; \
