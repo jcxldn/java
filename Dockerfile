@@ -7,6 +7,17 @@ ENV JAVA_HOME=/opt/java/openjdk \
     PATH="/opt/java/openjdk/bin:$PATH" \
 	GLIBC_VERSION="2.31-r1"
 
+ARG ARM64_ESUM
+ARG ARMV7_ESUM
+ARG PPC64LE_ESUM
+ARG S390X_ESUM
+ARG AMD64_ESUM
+ARG REPO
+ARG TYPE
+ARG VERSION
+ARG SLIM
+ARG JDK78FIX
+
 
 
 RUN mkdir -p /lib /lib64 /usr/glibc-compat/lib/locale /usr/glibc-compat/lib64 /etc; \
