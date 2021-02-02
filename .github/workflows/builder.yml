@@ -42,7 +42,7 @@ jobs:
             --output "type=image,push=$([[ $GITHUB_REF == "refs/heads/master" ]] && echo true || echo false)" \
             --env ARM64_ESUM=$(yq r platform-matrix.yml ${{ matrix.version }}.esums.aarch64) \
             --env ARMV7_ESUM=$(yq r platform-matrix.yml ${{ matrix.version }}.esums.armhf) \
-            --env PPC64LE_ESUM=$(yq platform-matrix.yml r ${{ matrix.version }}.esums.ppc64le) \
+            --env PPC64LE_ESUM=$(yq r platform-matrix.yml ${{ matrix.version }}.esums.ppc64le) \
             --env S390X_ESUM=$(yq r platform-matrix.yml ${{ matrix.version }}.esums.s390x) \
             --env AMD64_ESUM=$(yq r platform-matrix.yml ${{ matrix.version }}.esums.amd64) \
             --env REPO=$(yq r platform-matrix.yml ${{ matrix.version }}).repo \
