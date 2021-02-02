@@ -40,20 +40,20 @@ jobs:
           docker buildx build \
             --platform $(yq r platform-matrix.yml ${{ matrix.version }}.arch) \
             --output "type=image,push=$([[ $GITHUB_REF == "refs/heads/master" ]] && echo true || echo false)" \
-        #   ----------
-        #   ESUM Envs (different for each platform + version)
+#   ----------
+#   ESUM Envs (different for each platform + version)
             --env ARM64_ESUM=$(yq r platform-matrix.yml ${{ matrix.version }}.esums.aarch64) \
             --env ARMV7_ESUM=$(yq r platform-matrix.yml ${{ matrix.version }}.esums.armhf) \
             --env PPC64LE_ESUM=$(yq platform-matrix.yml r ${{ matrix.version }}.esums.ppc64le) \
             --env S390X_ESUM=$(yq r platform-matrix.yml ${{ matrix.version }}.esums.s390x) \
             --env AMD64_ESUM=$(yq r platform-matrix.yml ${{ matrix.version }}.esums.amd64) \
-        #   Version Envs
+#   Version Envs
             --env REPO=$(yq r platform-matrix.yml ${{ matrix.version }}).repo \
             --env TYPE=$(yq r platform-matrix.yml ${{ matrix.version }}).type \
             --env TAG=$(yq r platform-matrix.yml ${{ matrix.version }}).tag \
             --env VERSION=$(yq r platform-matrix.yml ${{ matrix.version }}).version \
-        #   Build Modifier Env
+#   Build Modifier Env
             --env SLIM=$(yq r platform-matrix.yml ${{ matrix.version }}).slim \
             --env JDK78FIX=$(yq r platform-matrix.yml ${{ matrix.version }}).jdk78fix \
-        #   ----------
+#   ----------
             -f Dockerfile -t jcxldn/openjdk-alpine:${{ matrix.version }} .
