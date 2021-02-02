@@ -52,6 +52,8 @@ RUN mkdir -p /lib /lib64 /usr/glibc-compat/lib/locale /usr/glibc-compat/lib64 /e
 				ln -s /usr/glibc-compat/lib/ld-linux-armhf.so.3 /lib64/ld-linux-armhf.so.3; \
 				ln -s /usr/glibc-compat/lib/ld-linux-armhf.so.3 /usr/glibc-compat/lib64/ld-linux-armhf.so.3; \
 				ln -s /usr/glibc-compat/etc/ld.so.cache /etc/ld.so.cache; \
+                # Set an env variable to trigger the java78fix function
+                if [ "$JDK78FIX" = "yes" ]; then DOJDK78FIX="yes"; fi; \
             }; \
             java78fix () { \
                 # Download stuff
@@ -96,6 +98,8 @@ RUN mkdir -p /lib /lib64 /usr/glibc-compat/lib/locale /usr/glibc-compat/lib64 /e
 				# Special case for s390x.
 				ln -s /usr/glibc-compat/lib/ld64.so.1 /lib/ld64.so.1; \
 				ln -s /usr/glibc-compat/lib/ld64.so.1 /lib64/ld64.so.1; \
+                # Set an env variable to trigger the java78fix function
+                if [ "$JDK78FIX" = "yes" ]; then DOJDK78FIX="yes"; fi; \
             }; \
             java78fix () { \
                 # Download stuff
@@ -133,8 +137,8 @@ RUN mkdir -p /lib /lib64 /usr/glibc-compat/lib/locale /usr/glibc-compat/lib64 /e
 		# Link glibc
 		glibc_setup; \
         
-        # Java 7/8 Fix (only run if env is set)
-        if [ "$JDK78FIX" = "yes" ]; then java78fix; fi; \
+        # Java 7/8 Fix (see above)
+        if [ "$DOJDK78FIX" = "yes" ]; then java78fix; fi; \
 		
 		# Download additional files
 		wget https://raw.githubusercontent.com/sgerrand/alpine-pkg-glibc/master/ld.so.conf -O /usr/glibc-compat/etc/ld.so.conf; \
