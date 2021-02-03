@@ -167,17 +167,19 @@ RUN mkdir -p /lib /lib64 /usr/glibc-compat/lib/locale /usr/glibc-compat/lib64 /e
         then \
         # Download stuff
         echo "[Java Slim Build] Downloading..."; \
-        wget https://raw.githubusercontent.com/Prouser123/openjdk-alpine-docker/master/slim-java-14/slim-java.sh; \
-        wget https://raw.githubusercontent.com/Prouser123/openjdk-alpine-docker/master/slim-java-14/slim-java_bin_del.list; \
-        wget https://raw.githubusercontent.com/Prouser123/openjdk-alpine-docker/master/slim-java-14/slim-java_jmod_del.list; \
-        wget https://raw.githubusercontent.com/Prouser123/openjdk-alpine-docker/master/slim-java-14/slim-java_lib_del.list; \
-        wget https://raw.githubusercontent.com/Prouser123/openjdk-alpine-docker/master/slim-java-14/slim-java_lib_del.list; \
-        wget https://raw.githubusercontent.com/Prouser123/openjdk-alpine-docker/master/slim-java-14/slim-java_rtjar_keep.list; \
+		mkdir -p /tmp/slim; \
+        wget https://raw.githubusercontent.com/Prouser123/openjdk-alpine-docker/master/slim-java-14/slim-java.sh -O /tmp/slim/; \
+        wget https://raw.githubusercontent.com/Prouser123/openjdk-alpine-docker/master/slim-java-14/slim-java_bin_del.list -O /tmp/slim/; \
+        wget https://raw.githubusercontent.com/Prouser123/openjdk-alpine-docker/master/slim-java-14/slim-java_jmod_del.list -O /tmp/slim/; \
+        wget https://raw.githubusercontent.com/Prouser123/openjdk-alpine-docker/master/slim-java-14/slim-java_lib_del.list -O /tmp/slim/; \
+        wget https://raw.githubusercontent.com/Prouser123/openjdk-alpine-docker/master/slim-java-14/slim-java_lib_del.list -O /tmp/slim/; \
+        wget https://raw.githubusercontent.com/Prouser123/openjdk-alpine-docker/master/slim-java-14/slim-java_rtjar_keep.list -O /tmp/slim/; \
 		# Strip java
         echo "[Java Slim Build] Stripping..."; \
-        chmod +x /usr/local/bin/slim-java.sh; \
+        chmod +x /tmp/slim/slim-java.sh; \
 		apk add --no-cache --virtual .build-deps bash binutils; \
-		/usr/local/bin/slim-java.sh /opt/java/openjdk/; \
+		/tmp/slim/slim-java.sh /opt/java/openjdk/; \
+		rm -rf /tmp/slim; \
 		apk del --purge .build-deps; \
         fi; \
         # ---------- STRIP END   ----------
