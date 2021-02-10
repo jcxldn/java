@@ -38,6 +38,17 @@ jobs:
         name: Run Buildx (${{ matrix.version }})
         run: |
           docker buildx build \
-            --platform $(yq r platform-matrix.yml ${{ matrix.version }}) \
+            --platform $(yq r platform-matrix.yml ${{ matrix.version }}.arch) \
             --output "type=image,push=$([[ $GITHUB_REF == "refs/heads/master" ]] && echo true || echo false)" \
-            -f ${{ matrix.version }}.Dockerfile -t jcxldn/openjdk-alpine:${{ matrix.version }} .
+            --build-arg ARM64_ESUM=$(yq r platform-matrix.yml ${{ matrix.version }}.esums.arm64) \
+            --build-arg ARMV7_ESUM=$(yq r platform-matrix.yml ${{ matrix.version }}.esums.armv7) \
+            --build-arg PPC64LE_ESUM=$(yq r platform-matrix.yml ${{ matrix.version }}.esums.ppc64le) \
+            --build-arg S390X_ESUM=$(yq r platform-matrix.yml ${{ matrix.version }}.esums.s390x) \
+            --build-arg AMD64_ESUM=$(yq r platform-matrix.yml ${{ matrix.version }}.esums.amd64) \
+            --build-arg REPO=$(yq r platform-matrix.yml ${{ matrix.version }}.repo) \
+            --build-arg TYPE=$(yq r platform-matrix.yml ${{ matrix.version }}.type) \
+            --build-arg TAG=$(yq r platform-matrix.yml ${{ matrix.version }}.tag) \
+            --build-arg VERSION=$(yq r platform-matrix.yml ${{ matrix.version }}.version) \
+            --build-arg SLIM=$(yq r platform-matrix.yml ${{ matrix.version }}.slim) \
+            --build-arg JDK78FIX=$(yq r platform-matrix.yml ${{ matrix.version }}.jdk78fix) \
+            -f Dockerfile -t jcxldn/openjdk-alpine:${{ matrix.version }} .

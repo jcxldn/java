@@ -1,9 +1,23 @@
+# JCX Matrix-Compatible Dockerfile
+
 FROM alpine:3.12
 
 # Set env variables for java to work properly
 ENV JAVA_HOME=/opt/java/openjdk \
     PATH="/opt/java/openjdk/bin:$PATH" \
 	GLIBC_VERSION="2.31-r1"
+
+ARG ARM64_ESUM
+ARG ARMV7_ESUM
+ARG PPC64LE_ESUM
+ARG S390X_ESUM
+ARG AMD64_ESUM
+ARG REPO
+ARG TYPE
+ARG TAG
+ARG VERSION
+ARG SLIM
+ARG JDK78FIX
 
 
 
@@ -12,8 +26,8 @@ RUN mkdir -p /lib /lib64 /usr/glibc-compat/lib/locale /usr/glibc-compat/lib64 /e
 		ARCH="$(apk --print-arch)"; \
 		case "${ARCH}" in \
 		aarch64|arm64) \
-			ESUM='2b749ceead19d68dd7e3c28b143dc4f94bb0916378a98b7346e851318ea4da84'; \
-			BINARY_URL='https://github.com/AdoptOpenJDK/openjdk14-binaries/releases/download/jdk-14.0.2%2B12/OpenJDK14U-jre_aarch64_linux_hotspot_14.0.2_12.tar.gz'; \
+			ESUM=$ARM64_ESUM; \
+			BINARY_URL="https://github.com/AdoptOpenJDK/${REPO}/releases/download/${TAG}/${TYPE}_aarch64_linux_hotspot_${VERSION}.tar.gz"; \
 			ZLIB_URL='http://ports.ubuntu.com/ubuntu-ports/pool/main/z/zlib/zlib1g_1.2.11.dfsg-2ubuntu1_arm64.deb'; \
 			GLIBC_ARCH='aarch64'; \
 			glibc_setup () { \
@@ -26,8 +40,8 @@ RUN mkdir -p /lib /lib64 /usr/glibc-compat/lib/locale /usr/glibc-compat/lib64 /e
 			;; \
 			# Download glibc and link
 		armhf|armv7l|armv7) \
-			ESUM='4468ecf74956783ae41a46e8ba023c003c69e4d111622944aad1af764a1bc4af'; \
-			BINARY_URL='https://github.com/AdoptOpenJDK/openjdk14-binaries/releases/download/jdk-14.0.2%2B12/OpenJDK14U-jre_arm_linux_hotspot_14.0.2_12.tar.gz'; \
+			ESUM=$ARMV7_ESUM; \
+			BINARY_URL="https://github.com/AdoptOpenJDK/${REPO}/releases/download/${TAG}/${TYPE}_arm_linux_hotspot_${VERSION}.tar.gz"; \
 			ZLIB_URL='http://ports.ubuntu.com/ubuntu-ports/pool/main/z/zlib/zlib1g_1.2.11.dfsg-2ubuntu1_armhf.deb'; \
 			# Override GLIBC Version - since 2.28 there is a bug blocking it being used on QEMU
 			# https://bugs.launchpad.net/qemu/+bug/1805913
@@ -38,12 +52,25 @@ RUN mkdir -p /lib /lib64 /usr/glibc-compat/lib/locale /usr/glibc-compat/lib64 /e
 				ln -s /usr/glibc-compat/lib/ld-linux-armhf.so.3 /lib64/ld-linux-armhf.so.3; \
 				ln -s /usr/glibc-compat/lib/ld-linux-armhf.so.3 /usr/glibc-compat/lib64/ld-linux-armhf.so.3; \
 				ln -s /usr/glibc-compat/etc/ld.so.cache /etc/ld.so.cache; \
-				# ln -sfn /lib/libc.musl-x86_64.so.1 /usr/glibc-compat/lib; \
+                # Set an env variable to trigger the java78fix function
+                if [ "$JDK78FIX" = "yes" ]; then DOJDK78FIX="yes"; fi; \
+            }; \
+            java78fix () { \
+                # Download stuff
+                echo "[OpenJDK 7/8] Linking libffi, libgcc to fix build..."; \
+                # Link musl
+				ln -sfn /lib/libc.musl-armv7.so.1 /usr/glibc-compat/lib; \
+				# OpenJDK 7 + 8 | s390x, armv7 - install libffi, libgcc
+				apk add --no-cache libffi libgcc; \
+				ln -s /usr/lib/libffi.so.7 /usr/lib/libffi.so.6; \
+				ln -s /usr/lib/libffi.so.6 /usr/glibc-compat/lib/libffi.so.6; \
+				ln -s /usr/lib/libgcc_s.so.1 /usr/glibc-compat/lib/libgcc_s.so.1; \
+                echo "[OpenJDK 7/8] Done!"; \
 			}; \
 			;; \
 		ppc64el|ppc64le) \
-			ESUM='0f96998be562cfbe8a4114581349dbd2609d0a23091e538fe142dcd9c83e70cf'; \
-			BINARY_URL='https://github.com/AdoptOpenJDK/openjdk14-binaries/releases/download/jdk-14.0.2%2B12/OpenJDK14U-jre_ppc64le_linux_hotspot_14.0.2_12.tar.gz'; \
+			ESUM=$PPC64LE_ESUM; \
+			BINARY_URL="https://github.com/AdoptOpenJDK/${REPO}/releases/download/${TAG}/${TYPE}_ppc64le_linux_hotspot_${VERSION}.tar.gz"; \
 			ZLIB_URL='http://ports.ubuntu.com/ubuntu-ports/pool/main/z/zlib/zlib1g_1.2.11.dfsg-2ubuntu1_ppc64el.deb'; \
 			GLIBC_ARCH='ppc64le'; \
 			glibc_setup () { \
@@ -58,8 +85,8 @@ RUN mkdir -p /lib /lib64 /usr/glibc-compat/lib/locale /usr/glibc-compat/lib64 /e
 			}; \
 			;; \
 		s390x) \
-			ESUM='9c4a87ea44165ccbcab5124b997ec1af1551bd2a2b255fca57d7a4e19c2075d3'; \
-			BINARY_URL='https://github.com/AdoptOpenJDK/openjdk14-binaries/releases/download/jdk-14.0.2%2B12/OpenJDK14U-jre_s390x_linux_hotspot_14.0.2_12.tar.gz'; \
+			ESUM=$S390X_ESUM; \
+			BINARY_URL="https://github.com/AdoptOpenJDK/${REPO}/releases/download/${TAG}/${TYPE}_s390x_linux_hotspot_${VERSION}.tar.gz"; \
 			ZLIB_URL='http://ports.ubuntu.com/ubuntu-ports/pool/main/z/zlib/zlib1g_1.2.11.dfsg-2ubuntu1_s390x.deb'; \
 			GLIBC_ARCH='s390x'; \
 			glibc_setup () { \
@@ -71,11 +98,25 @@ RUN mkdir -p /lib /lib64 /usr/glibc-compat/lib/locale /usr/glibc-compat/lib64 /e
 				# Special case for s390x.
 				ln -s /usr/glibc-compat/lib/ld64.so.1 /lib/ld64.so.1; \
 				ln -s /usr/glibc-compat/lib/ld64.so.1 /lib64/ld64.so.1; \
+                # Set an env variable to trigger the java78fix function
+                if [ "$JDK78FIX" = "yes" ]; then DOJDK78FIX="yes"; fi; \
+            }; \
+            java78fix () { \
+                # Download stuff
+                echo "[OpenJDK 7/8] Linking libffi, libgcc to fix build..."; \
+                # Link musl
+				ln -sfn /lib/libc.musl-s390x.so.1 /usr/glibc-compat/lib; \
+				# OpenJDK 7 + 8 | s390x, armv7 - install libffi, libgcc
+				apk add --no-cache libffi libgcc; \
+				ln -s /usr/lib/libffi.so.7 /usr/lib/libffi.so.6; \
+				ln -s /usr/lib/libffi.so.6 /usr/glibc-compat/lib/libffi.so.6; \
+				ln -s /usr/lib/libgcc_s.so.1 /usr/glibc-compat/lib/libgcc_s.so.1; \
+                echo "[OpenJDK 7/8] Done!"; \
 			}; \
 			;; \
 		amd64|x86_64) \
-			ESUM='1107845947da56e6bdad0da0b79210a079a74ec5c806f815ec5db9d09e1a9236'; \
-			BINARY_URL='https://github.com/AdoptOpenJDK/openjdk14-binaries/releases/download/jdk-14.0.2%2B12/OpenJDK14U-jre_x64_linux_hotspot_14.0.2_12.tar.gz'; \
+			ESUM=$AMD64_ESUM; \
+			BINARY_URL="https://github.com/AdoptOpenJDK/${REPO}/releases/download/${TAG}/${TYPE}_x64_linux_hotspot_${VERSION}.tar.gz"; \
 			ZLIB_URL='http://archive.ubuntu.com/ubuntu/pool/main/z/zlib/zlib1g_1.2.11.dfsg-2ubuntu1_amd64.deb'; \
 			GLIBC_ARCH='x86_64'; \
 			glibc_setup () { \
@@ -95,13 +136,18 @@ RUN mkdir -p /lib /lib64 /usr/glibc-compat/lib/locale /usr/glibc-compat/lib64 /e
 		wget -O- https://github.com/Prouser123/docker-glibc-multiarch-builder/releases/download/jcx-${GLIBC_VERSION}/glibc-bin-${GLIBC_VERSION}-${GLIBC_ARCH}.tar.gz | tar zxvf - -C /; \
 		# Link glibc
 		glibc_setup; \
+        
+        # Java 7/8 Fix (see above)
+        if [ "$DOJDK78FIX" = "yes" ]; then java78fix; fi; \
 		
 		# Download additional files
 		wget https://raw.githubusercontent.com/sgerrand/alpine-pkg-glibc/master/ld.so.conf -O /usr/glibc-compat/etc/ld.so.conf; \
 	wget https://raw.githubusercontent.com/sgerrand/alpine-pkg-glibc/master/nsswitch.conf -O /etc/nsswitch.conf; \
 		
 		# Download OpenJDK
-		curl -LfsSo /tmp/openjdk.tar.gz ${BINARY_URL}; \
+        echo "Downloading OpenJDK with URL: $BINARY_URL"; \
+		curl -LfsSo /tmp/openjdk.tar.gz $BINARY_URL; \
+        echo "Verifing download with checksum: $ESUM"; \
 		echo "${ESUM} */tmp/openjdk.tar.gz" | sha256sum -c -; \
 		mkdir -p /opt/java/openjdk; \
 		cd /opt/java/openjdk; \
@@ -114,6 +160,29 @@ RUN mkdir -p /lib /lib64 /usr/glibc-compat/lib/locale /usr/glibc-compat/lib64 /e
 		ar vx zlib.deb; \
 		tar xvf data.tar.xz; \
 		mv lib/$(ls lib)/* /usr/glibc-compat/lib/; \
+
+        # ---------- STRIP START ----------
+		# OpenJDK - Slim Java
+        if [ "$SLIM" = "yes" ]; \
+        then \
+        # Download stuff
+        echo "[Java Slim Build] Downloading..."; \
+		mkdir -p /tmp/slim; \
+        wget https://raw.githubusercontent.com/Prouser123/openjdk-alpine-docker/master/slim-java-14/slim-java.sh -P /tmp/slim/; \
+        wget https://raw.githubusercontent.com/Prouser123/openjdk-alpine-docker/master/slim-java-14/slim-java_bin_del.list -P /tmp/slim/; \
+        wget https://raw.githubusercontent.com/Prouser123/openjdk-alpine-docker/master/slim-java-14/slim-java_jmod_del.list -P /tmp/slim/; \
+        wget https://raw.githubusercontent.com/Prouser123/openjdk-alpine-docker/master/slim-java-14/slim-java_lib_del.list -P /tmp/slim/; \
+        wget https://raw.githubusercontent.com/Prouser123/openjdk-alpine-docker/master/slim-java-14/slim-java_rtjar_del.list -P /tmp/slim/; \
+        wget https://raw.githubusercontent.com/Prouser123/openjdk-alpine-docker/master/slim-java-14/slim-java_rtjar_keep.list -P /tmp/slim/; \
+		# Strip java
+        echo "[Java Slim Build] Stripping..."; \
+        chmod +x /tmp/slim/slim-java.sh; \
+		apk add --no-cache --virtual .build-deps bash binutils; \
+		/tmp/slim/slim-java.sh /opt/java/openjdk/; \
+		rm -rf /tmp/slim; \
+		apk del --purge .build-deps; \
+        fi; \
+        # ---------- STRIP END   ----------
 		
 		# Run strip on stuff
 		strip /usr/glibc-compat/sbin/**; \

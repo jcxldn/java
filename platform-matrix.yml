@@ -5,22 +5,142 @@
 
 
 # JREs
-15-jre: "linux/amd64,linux/arm64,linux/armhf,linux/s390x"
-14-jre: "linux/amd64,linux/arm64,linux/armhf,linux/s390x"
-11-jre: "linux/amd64,linux/arm64,linux/armhf,linux/s390x"
-8-jre: "linux/amd64,linux/arm64,linux/armhf,linux/s390x"
+15-jre:
+  arch: "linux/amd64,linux/arm64,linux/armhf,linux/s390x"
+  repo: "openjdk15-binaries"
+  type: "OpenJDK15U-jre"
+  tag: "jdk-15.0.1%2B9"
+  version: "15.0.1_9"
+  slim: "no"
+  jdk78fix: "no"
+  esums:
+    arm64: "9eecdd39239545b922878abf51015030ba9aed4dda5c4574ddbc669a71ddab31"
+    armv7: "f289d1b9fc05099889eaa9a52d352275d44698f3448153cc2ef05f2fa1c04cca"
+    ppc64le: "e759661cf8b41cecd61709ce14d2169d607288f2efc62739cb2c690605a5a28b"
+    s390x: "47e57b1b67627312e34f911c29a0b7970bef734308db1e413fe53376ed894f3a"
+    amd64: "e619197c7a5757631f6ea9c912ab47528ebf64c27cf788cdad22bc9245779411"
 
+14-jre:
+  arch: "linux/amd64,linux/arm64,linux/armhf,linux/s390x"
+  repo: "openjdk14-binaries"
+  type: "OpenJDK14U-jre"
+  tag: "jdk-14.0.2%2B12"
+  version: "14.0.2_12"
+  slim: "no"
+  jdk78fix: "no"
+  esums:
+    arm64: "2b749ceead19d68dd7e3c28b143dc4f94bb0916378a98b7346e851318ea4da84"
+    armv7: "4468ecf74956783ae41a46e8ba023c003c69e4d111622944aad1af764a1bc4af"
+    ppc64le: "0f96998be562cfbe8a4114581349dbd2609d0a23091e538fe142dcd9c83e70cf"
+    s390x: "9c4a87ea44165ccbcab5124b997ec1af1551bd2a2b255fca57d7a4e19c2075d3"
+    amd64: "1107845947da56e6bdad0da0b79210a079a74ec5c806f815ec5db9d09e1a9236"
 
+11-jre:
+  arch: "linux/amd64,linux/arm64,linux/armhf,linux/s390x"
+  repo: "openjdk11-binaries"
+  type: "OpenJDK11U-jre"
+  tag: "jdk-11.0.8%2B10"
+  version: "11.0.8_10"
+  slim: "no"
+  jdk78fix: "no"
+  esums:
+    arm64: "286c869dbaefda9b470ae71d1250fdecf9f06d8da97c0f7df9021d381d749106"
+    armv7: "ffa627b2d0c6001448bb8f1f24f7c9921dad37e67637f6ed0a9a479e680a3393"
+    ppc64le: "89231e1667d7cc4202d1a401497bb287d4eb12281c90c17e2570211cc4e901a3"
+    s390x: "dc0e715c17abcb12bedf77c638e58e67d828d3c4bf24a898f0d4b053caaeb25f"
+    amd64: "98615b1b369509965a612232622d39b5cefe117d6189179cbad4dcef2ee2f4e1"
 
+8-jre:
+  arch: "linux/amd64,linux/arm64,linux/armhf,linux/s390x"
+  repo: "openjdk8-binaries"
+  type: "OpenJDK8U-jre"
+  tag: "jdk8u265-b01"
+  version: "8u265b01"
+  slim: "no"
+  jdk78fix: "yes"
+  esums:
+    arm64: "2f9c5be1bf704f1233bcf96b8c02524c14dc4d43dc80c4926856091961b79948"
+    armv7: "4ac2503725b2729ec245dbdb000b2486f9c73ae86860c9525f9ac822ec81f0d6"
+    ppc64le: "4fb3640fae4b9bd4ebf834c775b547ed930cd1b805f4686223994480411aee72"
+    s390x: "8b76480c809c4fde654ab55d10371c35d70b50069ab1724960509d99ed61065d"
+    amd64: "9bce39f63d24626da75778f240294fa466a0ed117e32db798164621fe30b0723"
 
 
 # JDKs
 # -------------------------
 # linux/s390x throws SIGILL, so has been disabled.
 # -------------------------
-14-jdk-slim: "linux/amd64,linux/arm64,linux/armhf"
+14-jdk-slim:
+  arch: "linux/amd64,linux/arm64,linux/armhf"
+  repo: "openjdk14-binaries"
+  type: "OpenJDK14U-jdk"
+  tag: "jdk-14.0.2%2B12"
+  version: "14.0.2_12"
+  slim: "yes"
+  jdk78fix: "no"
+  esums:
+    arm64: "ee87e9f03b1fbe6f328429b78fe1a9f44900026d220c90dfd747fe0bcd62d904"
+    armv7: "65f193496c6977ba7aed1563edc4b5be091b5ff03e3d790074bb4e389a034b36"
+    ppc64le: "465a3b8e931896b8d95e452d479615c4bf543535c05b6ea246323ae114e67d7d"
+    s390x: "7d27aea30e359cf0bb561f8dcca6f4591dbc3ae831981f8a19aa367d31a9709b"
+    amd64: "7d5ee7e06909b8a99c0d029f512f67b092597aa5b0e78c109bd59405bbfa74fe"
 
-15-jdk: "linux/amd64,linux/arm64,linux/armhf"
-14-jdk: "linux/amd64,linux/arm64,linux/armhf"
-11-jdk: "linux/amd64,linux/arm64,linux/armhf"
-8-jdk: "linux/amd64,linux/arm64,linux/armhf"
+15-jdk:
+  arch: "linux/amd64,linux/arm64,linux/armhf"
+  repo: "openjdk15-binaries"
+  type: "OpenJDK15U-jdk"
+  tag: "jdk-15.0.1%2B9"
+  version: "15.0.1_9"
+  slim: "no"
+  jdk78fix: "no"
+  esums:
+    arm64: "84398a1566d66ee5a88f3326fb7f0b70504eb510190f8f798bdb386481a3900e"
+    armv7: "bef5e9f4ab8a87645fa2b3d0ffb9f2b97374caa03cd1296597e8c86e8360d5a2"
+    ppc64le: "bc5347c011025f9830a420f943f52b97ebf0fc642ebff9a25bf465d0a6f3f3b9"
+    s390x: "d402e322841abc3c5c8b0352f08d54d6b5c25b7d6f81716401da266bcb1d1ff0"
+    amd64: "61045ecb9434e3320dbc2c597715f9884586b7a18a56d29851b4d4a4d48a2a5e"
+
+14-jdk:
+  arch: "linux/amd64,linux/arm64,linux/armhf"
+  repo: "openjdk14-binaries"
+  type: "OpenJDK14U-jdk"
+  tag: "jdk-14.0.2%2B12"
+  version: "14.0.2_12"
+  slim: "no"
+  jdk78fix: "no"
+  esums:
+    arm64: "ee87e9f03b1fbe6f328429b78fe1a9f44900026d220c90dfd747fe0bcd62d904"
+    armv7: "65f193496c6977ba7aed1563edc4b5be091b5ff03e3d790074bb4e389a034b36"
+    ppc64le: "465a3b8e931896b8d95e452d479615c4bf543535c05b6ea246323ae114e67d7d"
+    s390x: "7d27aea30e359cf0bb561f8dcca6f4591dbc3ae831981f8a19aa367d31a9709b"
+    amd64: "7d5ee7e06909b8a99c0d029f512f67b092597aa5b0e78c109bd59405bbfa74fe"
+
+11-jdk:
+  arch: "linux/amd64,linux/arm64,linux/armhf"
+  repo: "openjdk11-binaries"
+  type: "OpenJDK11U-jdk"
+  tag: "jdk-11.0.8%2B10"
+  version: "11.0.8_10"
+  slim: "no"
+  jdk78fix: "no"
+  esums:
+    arm64: "fb27ea52ed901c14c9fe8ad2fc10b338b8cf47d6762571be1fe3fb7c426bab7c"
+    armv7: "d00370967e4657e137cc511e81d6accbfdb08dba91e6268abef8219e735fbfc5"
+    ppc64le: "d206a63cd719b65717f7f20ee3fe49f0b8b2db922986b4811c828db57212699e"
+    s390x: "5619e1437c7cd400169eb7f1c831c2635fdb2776a401147a2fc1841b01f83ed6"
+    amd64: "6e4cead158037cb7747ca47416474d4f408c9126be5b96f9befd532e0a762b47"
+
+8-jdk:
+  arch: "linux/amd64,linux/arm64,linux/armhf"
+  repo: "openjdk8-binaries"
+  type: "OpenJDK8U-jdk"
+  tag: "jdk8u265-b01"
+  version: "8u265b01"
+  slim: "no"
+  jdk78fix: "yes"
+  esums:
+    arm64: "87d16dac293d2a9abbb559a277bfaded702f28d1bfdc526f8613bb9cfed84a12"
+    armv7: "dc3405aab81f422b7721f665c76371bd7b03c291eea89cd110a82d8bcf07809a"
+    ppc64le: "7bbb9d76458ee29bc5e2458b32a91b8c032ecffe6cb8500734ca41d2d8f5c9f3"
+    s390x: "aca50f02d59169cb428d54501846b518edc9fff6a6f428459c72b4faa2b4abb0"
+    amd64: "1285da6278f2d38a790a21148d7e683f20de0799c44b937043830ef6b57f58c4"
