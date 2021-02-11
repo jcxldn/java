@@ -5,7 +5,7 @@ FROM alpine:3.12
 # Set env variables for java to work properly
 ENV JAVA_HOME=/opt/java/openjdk \
     PATH="/opt/java/openjdk/bin:$PATH" \
-	GLIBC_VERSION="2.31-r1"
+	GLIBC_VERSION="2.32-r0"
 
 ARG ARM64_ESUM
 ARG ARMV7_ESUM
@@ -29,7 +29,7 @@ RUN mkdir -p /lib /lib64 /usr/glibc-compat/lib/locale /usr/glibc-compat/lib64 /e
 			ESUM=$ARM64_ESUM; \
 			BINARY_URL="https://github.com/AdoptOpenJDK/${REPO}/releases/download/${TAG}/${TYPE}_aarch64_linux_hotspot_${VERSION}.tar.gz"; \
 			ZLIB_URL='http://ports.ubuntu.com/ubuntu-ports/pool/main/z/zlib/zlib1g_1.2.11.dfsg-2ubuntu1_arm64.deb'; \
-			GLIBC_ARCH='aarch64'; \
+			GLIBC_ARCH='aarch64-linux-gnu'; \
 			glibc_setup () { \
 				ln -s /usr/glibc-compat/lib/ld-linux-aarch64.so.1 /lib/ld-linux-aarch64.so.1; \
 				ln -s /usr/glibc-compat/lib/ld-linux-aarch64.so.1 /lib64/ld-linux-aarch64.so.1; \
@@ -72,7 +72,7 @@ RUN mkdir -p /lib /lib64 /usr/glibc-compat/lib/locale /usr/glibc-compat/lib64 /e
 			ESUM=$PPC64LE_ESUM; \
 			BINARY_URL="https://github.com/AdoptOpenJDK/${REPO}/releases/download/${TAG}/${TYPE}_ppc64le_linux_hotspot_${VERSION}.tar.gz"; \
 			ZLIB_URL='http://ports.ubuntu.com/ubuntu-ports/pool/main/z/zlib/zlib1g_1.2.11.dfsg-2ubuntu1_ppc64el.deb'; \
-			GLIBC_ARCH='ppc64le'; \
+			GLIBC_ARCH='powerpc64le-linux-gnu'; \
 			glibc_setup () { \
 				ln -s /usr/glibc-compat/lib/ld-linux-powerpc64le.so.2 /lib/ld-linux-powerpc64le.so.2; \
 				ln -s /usr/glibc-compat/lib/ld-linux-powerpc64le.so.2 /lib64/ld-linux-powerpc64le.so.2; \
@@ -88,7 +88,7 @@ RUN mkdir -p /lib /lib64 /usr/glibc-compat/lib/locale /usr/glibc-compat/lib64 /e
 			ESUM=$S390X_ESUM; \
 			BINARY_URL="https://github.com/AdoptOpenJDK/${REPO}/releases/download/${TAG}/${TYPE}_s390x_linux_hotspot_${VERSION}.tar.gz"; \
 			ZLIB_URL='http://ports.ubuntu.com/ubuntu-ports/pool/main/z/zlib/zlib1g_1.2.11.dfsg-2ubuntu1_s390x.deb'; \
-			GLIBC_ARCH='s390x'; \
+			GLIBC_ARCH='s390x-linux-gnu'; \
 			glibc_setup () { \
 				ln -s /usr/glibc-compat/lib/ld-linux-s390x.so.2 /lib/ld-linux-s390x.so.2; \
 				ln -s /usr/glibc-compat/lib/ld-linux-s390x.so.2 /lib64/ld-linux-s390x.so.2; \
@@ -118,7 +118,7 @@ RUN mkdir -p /lib /lib64 /usr/glibc-compat/lib/locale /usr/glibc-compat/lib64 /e
 			ESUM=$AMD64_ESUM; \
 			BINARY_URL="https://github.com/AdoptOpenJDK/${REPO}/releases/download/${TAG}/${TYPE}_x64_linux_hotspot_${VERSION}.tar.gz"; \
 			ZLIB_URL='http://archive.ubuntu.com/ubuntu/pool/main/z/zlib/zlib1g_1.2.11.dfsg-2ubuntu1_amd64.deb'; \
-			GLIBC_ARCH='x86_64'; \
+			GLIBC_ARCH='x86_64-linux'; \
 			glibc_setup () { \
 				ln -s /usr/glibc-compat/lib/ld-linux-x86-64.so.2 /lib/ld-linux-x86-64.so.2; \
 				ln -s /usr/glibc-compat/lib/ld-linux-x86-64.so.2 /lib64/ld-linux-x86-64.so.2; \
