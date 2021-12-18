@@ -11,6 +11,7 @@
 # JREs
 16-jre:
   arch: "linux/amd64,linux/arm64,linux/armhf,linux/s390x"
+  org: "AdoptOpenJDK"
   repo: "openjdk16-binaries"
   type: "OpenJDK16-jre"
   tag: "jdk-16%2B36"
@@ -26,6 +27,7 @@
 
 15-jre:
   arch: "linux/amd64,linux/arm64,linux/armhf,linux/s390x"
+  org: "AdoptOpenJDK"
   repo: "openjdk15-binaries"
   type: "OpenJDK15U-jre"
   tag: "jdk-15.0.2%2B7"
@@ -41,6 +43,7 @@
 
 14-jre:
   arch: "linux/amd64,linux/arm64,linux/armhf,linux/s390x"
+  org: "AdoptOpenJDK"
   repo: "openjdk14-binaries"
   type: "OpenJDK14U-jre"
   tag: "jdk-14.0.2%2B12"
@@ -56,6 +59,7 @@
 
 11-jre:
   arch: "linux/amd64,linux/arm64,linux/armhf,linux/s390x"
+  org: "AdoptOpenJDK"
   repo: "openjdk11-binaries"
   type: "OpenJDK11U-jre"
   tag: "jdk-11.0.10%2B9"
@@ -71,6 +75,7 @@
 
 8-jre:
   arch: "linux/amd64,linux/arm64,linux/armhf,linux/s390x"
+  org: "AdoptOpenJDK"
   repo: "openjdk8-binaries"
   type: "OpenJDK8U-jre"
   tag: "jdk8u265-b01"
@@ -91,6 +96,7 @@
 # -------------------------
 14-jdk-slim:
   arch: "linux/amd64,linux/arm64,linux/armhf"
+  org: "AdoptOpenJDK"
   repo: "openjdk14-binaries"
   type: "OpenJDK14U-jdk"
   tag: "jdk-14.0.2%2B12"
@@ -106,6 +112,7 @@
 
 16-jdk:
   arch: "linux/amd64,linux/arm64,linux/armhf"
+  org: "AdoptOpenJDK"
   repo: "openjdk16-binaries"
   type: "OpenJDK16-jdk"
   tag: "jdk-16%2B36"
@@ -121,6 +128,7 @@
 
 15-jdk:
   arch: "linux/amd64,linux/arm64,linux/armhf"
+  org: "AdoptOpenJDK"
   repo: "openjdk15-binaries"
   type: "OpenJDK15U-jdk"
   tag: "jdk-15.0.2%2B7"
@@ -136,6 +144,7 @@
 
 14-jdk:
   arch: "linux/amd64,linux/arm64,linux/armhf"
+  org: "AdoptOpenJDK"
   repo: "openjdk14-binaries"
   type: "OpenJDK14U-jdk"
   tag: "jdk-14.0.2%2B12"
@@ -151,6 +160,7 @@
 
 11-jdk:
   arch: "linux/amd64,linux/arm64,linux/armhf"
+  org: "AdoptOpenJDK"
   repo: "openjdk11-binaries"
   type: "OpenJDK11U-jdk"
   tag: "jdk-11.0.10%2B9"
@@ -166,6 +176,7 @@
 
 8-jdk:
   arch: "linux/amd64,linux/arm64,linux/armhf"
+  org: "AdoptOpenJDK"
   repo: "openjdk8-binaries"
   type: "OpenJDK8U-jdk"
   tag: "jdk8u265-b01"

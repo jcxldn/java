@@ -12,6 +12,7 @@ ARG ARMV7_ESUM
 ARG PPC64LE_ESUM
 ARG S390X_ESUM
 ARG AMD64_ESUM
+ARG ORG
 ARG REPO
 ARG TYPE
 ARG TAG
@@ -27,7 +28,7 @@ RUN mkdir -p /lib /lib64 /usr/glibc-compat/lib/locale /usr/glibc-compat/lib64 /e
 		case "${ARCH}" in \
 		aarch64|arm64) \
 			ESUM=$ARM64_ESUM; \
-			BINARY_URL="https://github.com/AdoptOpenJDK/${REPO}/releases/download/${TAG}/${TYPE}_aarch64_linux_hotspot_${VERSION}.tar.gz"; \
+			BINARY_URL="https://github.com/${ORG}/${REPO}/releases/download/${TAG}/${TYPE}_aarch64_linux_hotspot_${VERSION}.tar.gz"; \
 			ZLIB_URL='http://ports.ubuntu.com/ubuntu-ports/pool/main/z/zlib/zlib1g_1.2.11.dfsg-2ubuntu1_arm64.deb'; \
 			GLIBC_ARCH='aarch64'; \
 			glibc_setup () { \
@@ -41,7 +42,7 @@ RUN mkdir -p /lib /lib64 /usr/glibc-compat/lib/locale /usr/glibc-compat/lib64 /e
 			# Download glibc and link
 		armhf|armv7l|armv7) \
 			ESUM=$ARMV7_ESUM; \
-			BINARY_URL="https://github.com/AdoptOpenJDK/${REPO}/releases/download/${TAG}/${TYPE}_arm_linux_hotspot_${VERSION}.tar.gz"; \
+			BINARY_URL="https://github.com/${ORG}/${REPO}/releases/download/${TAG}/${TYPE}_arm_linux_hotspot_${VERSION}.tar.gz"; \
 			ZLIB_URL='http://ports.ubuntu.com/ubuntu-ports/pool/main/z/zlib/zlib1g_1.2.11.dfsg-2ubuntu1_armhf.deb'; \
 			# Override GLIBC Version - since 2.28 there is a bug blocking it being used on QEMU
 			# https://bugs.launchpad.net/qemu/+bug/1805913
@@ -70,7 +71,7 @@ RUN mkdir -p /lib /lib64 /usr/glibc-compat/lib/locale /usr/glibc-compat/lib64 /e
 			;; \
 		ppc64el|ppc64le) \
 			ESUM=$PPC64LE_ESUM; \
-			BINARY_URL="https://github.com/AdoptOpenJDK/${REPO}/releases/download/${TAG}/${TYPE}_ppc64le_linux_hotspot_${VERSION}.tar.gz"; \
+			BINARY_URL="https://github.com/${ORG}/${REPO}/releases/download/${TAG}/${TYPE}_ppc64le_linux_hotspot_${VERSION}.tar.gz"; \
 			ZLIB_URL='http://ports.ubuntu.com/ubuntu-ports/pool/main/z/zlib/zlib1g_1.2.11.dfsg-2ubuntu1_ppc64el.deb'; \
 			GLIBC_ARCH='ppc64le'; \
 			glibc_setup () { \
@@ -86,7 +87,7 @@ RUN mkdir -p /lib /lib64 /usr/glibc-compat/lib/locale /usr/glibc-compat/lib64 /e
 			;; \
 		s390x) \
 			ESUM=$S390X_ESUM; \
-			BINARY_URL="https://github.com/AdoptOpenJDK/${REPO}/releases/download/${TAG}/${TYPE}_s390x_linux_hotspot_${VERSION}.tar.gz"; \
+			BINARY_URL="https://github.com/${ORG}/${REPO}/releases/download/${TAG}/${TYPE}_s390x_linux_hotspot_${VERSION}.tar.gz"; \
 			ZLIB_URL='http://ports.ubuntu.com/ubuntu-ports/pool/main/z/zlib/zlib1g_1.2.11.dfsg-2ubuntu1_s390x.deb'; \
 			GLIBC_ARCH='s390x'; \
 			glibc_setup () { \
@@ -116,7 +117,7 @@ RUN mkdir -p /lib /lib64 /usr/glibc-compat/lib/locale /usr/glibc-compat/lib64 /e
 			;; \
 		amd64|x86_64) \
 			ESUM=$AMD64_ESUM; \
-			BINARY_URL="https://github.com/AdoptOpenJDK/${REPO}/releases/download/${TAG}/${TYPE}_x64_linux_hotspot_${VERSION}.tar.gz"; \
+			BINARY_URL="https://github.com/${ORG}/${REPO}/releases/download/${TAG}/${TYPE}_x64_linux_hotspot_${VERSION}.tar.gz"; \
 			ZLIB_URL='http://archive.ubuntu.com/ubuntu/pool/main/z/zlib/zlib1g_1.2.11.dfsg-2ubuntu1_amd64.deb'; \
 			GLIBC_ARCH='x86_64'; \
 			glibc_setup () { \

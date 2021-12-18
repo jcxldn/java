@@ -45,6 +45,7 @@ jobs:
             --build-arg PPC64LE_ESUM=$(yq r platform-matrix.yml ${{ matrix.version }}.esums.ppc64le) \
             --build-arg S390X_ESUM=$(yq r platform-matrix.yml ${{ matrix.version }}.esums.s390x) \
             --build-arg AMD64_ESUM=$(yq r platform-matrix.yml ${{ matrix.version }}.esums.amd64) \
+            --build-arg ORG=$(yq r platform-matrix.yml ${{ matrix.version }}.org) \
             --build-arg REPO=$(yq r platform-matrix.yml ${{ matrix.version }}.repo) \
             --build-arg TYPE=$(yq r platform-matrix.yml ${{ matrix.version }}.type) \
             --build-arg TAG=$(yq r platform-matrix.yml ${{ matrix.version }}.tag) \
