@@ -2,16 +2,10 @@ import fetch from "node-fetch"
 import yaml from "yaml"
 import fs from "fs/promises"
 
-const BASE_URL = "https://api.adoptopenjdk.net/v3/";
-const getUrl = path => BASE_URL + path;
-
-
-const archMappings = { arm64: "aarch64", armv7: "armv7", ppc64le: "ppc64le", s390x: "s390x", amd64: "amd64" };
-
-const imageTypes = ["jdk", "jre"];
-
-const osTypes = ["linux"];
-
+const API_VENDORS = {
+    "adoptium": "https://api.adoptium.net/v3",
+    "AdoptOpenJDK": "https://api.adoptopenjdk.net/v3"
+}
 
 const findAsset = (
   asset,
@@ -50,57 +44,68 @@ const dockerArchToAdoptArch = (arch) => {
 
     
     let platforms = {};
+    
     Object.keys(platformMatrix).forEach((platform) => {
         const split = platform.split("-");
         const release = split[0];
         const type = split.slice(1).join("-");
-        
+        // Get the GitHub org for this platform (string)
+        const org = platformMatrix[platform].org;
+
         platforms[release] ? null : (platforms[release] = []); // Add empty array if needed to platforms[release]
-        platforms[release].push(type);
+        platforms[release][org] ? null : (platforms[release][org] = []); // Add empty array if needed to platforms[release]
+        platforms[release][org].push(type);
     });
-    console.log(platforms)
-
-
-    // DEBUG
-    platforms = {"16": ["jre"]}
-
+    //console.log(platforms)
 
     // Iterate through each java release (8, 11, 16, etc)
-    Object.keys(platforms).forEach(async platform => {
-        console.log(`Platform: Java ${platform}`)
+    for (const platform in platforms) {
+    //Object.keys(platforms).forEach(platform => {
 
-        // 1. Query the API for assets for this release
-        const res = await fetch(getUrl(`assets/latest/${platform}/hotspot`));
-        const data = await res.json();
+        // Iterate through each vendor (adoptopenjdk, adoptium)
+        for (const vendor in platforms[platform]) {
+        //vendors.forEach(async vendor => {
+            console.log(`Platform: Java ${platform} on ${vendor}`);
+            const base_url = API_VENDORS[vendor]
+            console.log(`Using API: ${base_url}`)
 
-        //console.log(data)
+            // 1. Query the API for assets for this release
+            const res = await fetch(`${base_url}/assets/latest/${platform}/hotspot`);
+            const data = await res.json();
 
-        // 2.. Iterate through each variant (jre, jdk, jdk-slim)
-        platforms[platform].forEach(variant => {
-            console.log(`Variant: ${variant}`)
+            //console.log(data)
+
+          // 2.. Iterate through each variant (jre, jdk, jdk-slim)
+          platforms[platform][vendor].forEach((variant) => {
+            console.log(`Variant: ${variant}`);
 
             // 1: Get list of arches for this variant
-            const archStr = platformMatrix[`${platform}-${variant}`].arch
-            const archArr = archStr.split(",")
+            // Remove -slim suffix from the variant name
+            const archStr = platformMatrix[`${platform}-${variant.split("-slim")[0]}`].arch;
+            const archArr = archStr.split(",");
 
-            console.log(archArr)
+            console.log(archArr);
 
             // Iterate through each arch
             archArr.forEach((arch) => {
-                const adoptArch = dockerArchToAdoptArch(arch);
-                console.log(`Arch: ${adoptArch} (${arch})`);
+              const adoptArch = dockerArchToAdoptArch(arch);
+              console.log(`Arch: ${adoptArch} (${arch})`);
 
-                // Find something
-                const found = data.find((query) =>
-                    findAsset(query, { architecture: adoptArch, image_type: variant })
-                );
+              // Find something
+              const found = data.find((query) =>
+                findAsset(query, {
+                  architecture: adoptArch,
+                  image_type: variant.split("-slim")[0],
+                })
+              );
 
-                console.log("FOUND DATA");
-                console.log(found.binary.package.checksum)
-                console.log(encodeURIComponent(found.release_name))
-            })
-        })
-    })
+              console.log("FOUND DATA");
+              console.log(found.binary.package.checksum);
+              console.log(encodeURIComponent(found.release_name));
+            });
+          });
+        }
+    }
 
 
 
