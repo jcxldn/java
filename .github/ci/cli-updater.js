@@ -96,11 +96,19 @@ const dockerArchToAdoptArch = (arch) => {
               const adoptArch = dockerArchToAdoptArch(arch);
               log.info('platforms.vendors.variants.arch', `Arch: ${adoptArch} (${arch})`);
 
+              // Determine image type
+              let image_type = undefined
+              if (vendor == "AdoptOpenJDK") {
+                image_type = variant.split("-slim")[0]
+              } else if (vendor == "adoptium") {
+                image_type = "jdk" // adoptium does not build a JRE.
+              }
+
               // Find something
               const found = data.find((query) =>
                 findAsset(query, {
                   architecture: adoptArch,
-                  image_type: variant.split("-slim")[0],
+                  image_type,
                 })
                 );
                 
