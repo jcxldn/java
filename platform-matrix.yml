@@ -26,7 +26,6 @@
   org: adoptium
   repo: temurin17-binaries
   type: OpenJDK17U-jdk
-  slim: no
   jdk78fix: no
   esums:
     amd64: 9d58cb741509a88e0ae33eb022334fb900b409b198eca6fe76246f0677b392ad
@@ -40,7 +39,6 @@
   org: adoptium
   repo: temurin16-binaries
   type: OpenJDK16U-jdk
-  slim: no
   jdk78fix: no
   esums:
     amd64: 323d6d7474a359a28eff7ddd0df8e65bd61554a8ed12ef42fd9365349e573c2c
@@ -55,7 +53,6 @@
   org: AdoptOpenJDK
   repo: openjdk15-binaries
   type: OpenJDK15U-jdk
-  slim: no
   jdk78fix: no
   esums:
     amd64: 31af7efdb1cc0ffd001bc145c3d255266889ad6b502133283ae8bf233d11334c
@@ -70,7 +67,6 @@
   org: AdoptOpenJDK
   repo: openjdk14-binaries
   type: OpenJDK14U-jdk
-  slim: no
   jdk78fix: no
   esums:
     amd64: 1107845947da56e6bdad0da0b79210a079a74ec5c806f815ec5db9d09e1a9236
@@ -85,7 +81,6 @@
   org: adoptium
   repo: temurin11-binaries
   type: OpenJDK11U-jdk
-  slim: no
   jdk78fix: no
   esums:
     amd64: fb0a27e6e1f26a1ee79daa92e4cfe3ec0d676acfe114d99dd84b3414f056e8a0
@@ -100,7 +95,6 @@
   org: AdoptOpenJDK
   repo: openjdk8-binaries
   type: OpenJDK8U-jre
-  slim: no
   jdk78fix: yes
   updater-ignore: yes
   esums:
@@ -110,26 +104,11 @@
   tag: jdk8u265-b01
   version: 8u265b01
   needs-jlink: no
-14-jdk-slim:
-  arch: linux/amd64,linux/arm64,linux/armhf
-  org: AdoptOpenJDK
-  repo: openjdk14-binaries
-  type: OpenJDK14U-jdk
-  slim: yes
-  jdk78fix: no
-  esums:
-    amd64: 7d5ee7e06909b8a99c0d029f512f67b092597aa5b0e78c109bd59405bbfa74fe
-    arm64: ee87e9f03b1fbe6f328429b78fe1a9f44900026d220c90dfd747fe0bcd62d904
-    armv7: 65f193496c6977ba7aed1563edc4b5be091b5ff03e3d790074bb4e389a034b36
-  tag: jdk-14.0.2%2B12
-  version: 14.0.2_12
-  needs-jlink: no
 17-jdk:
   arch: linux/amd64,linux/arm64,linux/armhf
   org: adoptium
   repo: temurin17-binaries
   type: OpenJDK17U-jdk
-  slim: no
   jdk78fix: no
   esums:
     amd64: 6ea18c276dcbb8522feeebcfc3a4b5cb7c7e7368ba8590d3326c6c3efc5448b6
@@ -143,7 +122,6 @@
   org: adoptium
   repo: temurin16-binaries
   type: OpenJDK16U-jdk
-  slim: no
   jdk78fix: no
   esums:
     amd64: 323d6d7474a359a28eff7ddd0df8e65bd61554a8ed12ef42fd9365349e573c2c
@@ -157,7 +135,6 @@
   org: AdoptOpenJDK
   repo: openjdk15-binaries
   type: OpenJDK15U-jdk
-  slim: no
   jdk78fix: no
   esums:
     amd64: 94f20ca8ea97773571492e622563883b8869438a015d02df6028180dd9acc24d
@@ -171,7 +148,6 @@
   org: AdoptOpenJDK
   repo: openjdk14-binaries
   type: OpenJDK14U-jdk
-  slim: no
   jdk78fix: no
   esums:
     amd64: 7d5ee7e06909b8a99c0d029f512f67b092597aa5b0e78c109bd59405bbfa74fe
@@ -186,7 +162,6 @@
   repo: temurin11-binaries
   type: OpenJDK11U-jdk
   version: 11.0.13_8
-  slim: no
   jdk78fix: no
   esums:
     amd64: 3b1c0c34be4c894e64135a454f2d5aaa4bd10aea04ec2fa0c0efe6bb26528e30
@@ -199,7 +174,6 @@
   org: AdoptOpenJDK
   repo: openjdk8-binaries
   type: OpenJDK8U-jdk
-  slim: no
   jdk78fix: yes
   updater-ignore: yes
   esums:

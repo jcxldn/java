@@ -190,30 +190,7 @@ RUN mkdir -p /lib /lib64 /usr/glibc-compat/lib/locale /usr/glibc-compat/lib64 /e
 		mv /opt/java/openjdk-jre /opt/java/openjdk; \
 		set +x; \
 		fi; \
-		# ---------- NEEDSJLINK END ----------
-
-        # ---------- STRIP START ----------
-		# OpenJDK - Slim Java
-        if [ "$SLIM" = "yes" ]; \
-        then \
-        # Download stuff
-        echo "[Java Slim Build] Downloading..."; \
-		mkdir -p /tmp/slim; \
-        wget https://raw.githubusercontent.com/Prouser123/openjdk-alpine-docker/master/slim-java-14/slim-java.sh -P /tmp/slim/; \
-        wget https://raw.githubusercontent.com/Prouser123/openjdk-alpine-docker/master/slim-java-14/slim-java_bin_del.list -P /tmp/slim/; \
-        wget https://raw.githubusercontent.com/Prouser123/openjdk-alpine-docker/master/slim-java-14/slim-java_jmod_del.list -P /tmp/slim/; \
-        wget https://raw.githubusercontent.com/Prouser123/openjdk-alpine-docker/master/slim-java-14/slim-java_lib_del.list -P /tmp/slim/; \
-        wget https://raw.githubusercontent.com/Prouser123/openjdk-alpine-docker/master/slim-java-14/slim-java_rtjar_del.list -P /tmp/slim/; \
-        wget https://raw.githubusercontent.com/Prouser123/openjdk-alpine-docker/master/slim-java-14/slim-java_rtjar_keep.list -P /tmp/slim/; \
-		# Strip java
-        echo "[Java Slim Build] Stripping..."; \
-        chmod +x /tmp/slim/slim-java.sh; \
-		apk add --no-cache --virtual .build-deps bash binutils; \
-		/tmp/slim/slim-java.sh /opt/java/openjdk/; \
-		rm -rf /tmp/slim; \
-		apk del --purge .build-deps; \
-        fi; \
-        # ---------- STRIP END   ----------
+		# ---------- NEEDSJLINK END -------
 		
 		# Run strip on stuff
 		strip /usr/glibc-compat/sbin/**; \
