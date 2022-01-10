@@ -170,6 +170,8 @@ RUN mkdir -p /lib /lib64 /usr/glibc-compat/lib/locale /usr/glibc-compat/lib64 /e
 		# See platform-matrix-header.txt for details.
 		if [ "$NEEDSJLINK" = "yes" ]; \
 		then \
+		echo "[jlink] Building... (with set -x)"; \
+		set -x; \
 		mkdir -p /opt/java/openjdk-jre; \
 		# We are going to try to recreate the 'legacy' JRE builds that Adoptium create.
 		# https://blog.adoptium.net/2021/10/jlink-to-produce-own-runtime/#:~:text=shown%20in%20the-,following%20command%3A,-jdk%2D17%2B35
@@ -183,6 +185,7 @@ RUN mkdir -p /lib /lib64 /usr/glibc-compat/lib/locale /usr/glibc-compat/lib64 /e
 		# Now we delete the old (jdk) and replace it with the new JRE equivalent.
 		rm -rf /opt/java/openjdk/; \
 		mv /opt/java/openjdk-jre /opt/java/openjdk; \
+		set +x; \
 		fi; \
 		# ---------- NEEDSJLINK END ----------
 
