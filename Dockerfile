@@ -12,12 +12,14 @@ ARG ARMV7_ESUM
 ARG PPC64LE_ESUM
 ARG S390X_ESUM
 ARG AMD64_ESUM
+ARG ORG
 ARG REPO
 ARG TYPE
 ARG TAG
 ARG VERSION
 ARG SLIM
 ARG JDK78FIX
+ARG NEEDSJLINK
 
 
 
@@ -27,7 +29,7 @@ RUN mkdir -p /lib /lib64 /usr/glibc-compat/lib/locale /usr/glibc-compat/lib64 /e
 		case "${ARCH}" in \
 		aarch64|arm64) \
 			ESUM=$ARM64_ESUM; \
-			BINARY_URL="https://github.com/AdoptOpenJDK/${REPO}/releases/download/${TAG}/${TYPE}_aarch64_linux_hotspot_${VERSION}.tar.gz"; \
+			BINARY_URL="https://github.com/${ORG}/${REPO}/releases/download/${TAG}/${TYPE}_aarch64_linux_hotspot_${VERSION}.tar.gz"; \
 			ZLIB_URL='http://ports.ubuntu.com/ubuntu-ports/pool/main/z/zlib/zlib1g_1.2.11.dfsg-2ubuntu1_arm64.deb'; \
 			GLIBC_ARCH='aarch64'; \
 			glibc_setup () { \
@@ -41,7 +43,7 @@ RUN mkdir -p /lib /lib64 /usr/glibc-compat/lib/locale /usr/glibc-compat/lib64 /e
 			# Download glibc and link
 		armhf|armv7l|armv7) \
 			ESUM=$ARMV7_ESUM; \
-			BINARY_URL="https://github.com/AdoptOpenJDK/${REPO}/releases/download/${TAG}/${TYPE}_arm_linux_hotspot_${VERSION}.tar.gz"; \
+			BINARY_URL="https://github.com/${ORG}/${REPO}/releases/download/${TAG}/${TYPE}_arm_linux_hotspot_${VERSION}.tar.gz"; \
 			ZLIB_URL='http://ports.ubuntu.com/ubuntu-ports/pool/main/z/zlib/zlib1g_1.2.11.dfsg-2ubuntu1_armhf.deb'; \
 			# Override GLIBC Version - since 2.28 there is a bug blocking it being used on QEMU
 			# https://bugs.launchpad.net/qemu/+bug/1805913
@@ -70,7 +72,7 @@ RUN mkdir -p /lib /lib64 /usr/glibc-compat/lib/locale /usr/glibc-compat/lib64 /e
 			;; \
 		ppc64el|ppc64le) \
 			ESUM=$PPC64LE_ESUM; \
-			BINARY_URL="https://github.com/AdoptOpenJDK/${REPO}/releases/download/${TAG}/${TYPE}_ppc64le_linux_hotspot_${VERSION}.tar.gz"; \
+			BINARY_URL="https://github.com/${ORG}/${REPO}/releases/download/${TAG}/${TYPE}_ppc64le_linux_hotspot_${VERSION}.tar.gz"; \
 			ZLIB_URL='http://ports.ubuntu.com/ubuntu-ports/pool/main/z/zlib/zlib1g_1.2.11.dfsg-2ubuntu1_ppc64el.deb'; \
 			GLIBC_ARCH='ppc64le'; \
 			glibc_setup () { \
@@ -86,7 +88,7 @@ RUN mkdir -p /lib /lib64 /usr/glibc-compat/lib/locale /usr/glibc-compat/lib64 /e
 			;; \
 		s390x) \
 			ESUM=$S390X_ESUM; \
-			BINARY_URL="https://github.com/AdoptOpenJDK/${REPO}/releases/download/${TAG}/${TYPE}_s390x_linux_hotspot_${VERSION}.tar.gz"; \
+			BINARY_URL="https://github.com/${ORG}/${REPO}/releases/download/${TAG}/${TYPE}_s390x_linux_hotspot_${VERSION}.tar.gz"; \
 			ZLIB_URL='http://ports.ubuntu.com/ubuntu-ports/pool/main/z/zlib/zlib1g_1.2.11.dfsg-2ubuntu1_s390x.deb'; \
 			GLIBC_ARCH='s390x'; \
 			glibc_setup () { \
@@ -116,7 +118,7 @@ RUN mkdir -p /lib /lib64 /usr/glibc-compat/lib/locale /usr/glibc-compat/lib64 /e
 			;; \
 		amd64|x86_64) \
 			ESUM=$AMD64_ESUM; \
-			BINARY_URL="https://github.com/AdoptOpenJDK/${REPO}/releases/download/${TAG}/${TYPE}_x64_linux_hotspot_${VERSION}.tar.gz"; \
+			BINARY_URL="https://github.com/${ORG}/${REPO}/releases/download/${TAG}/${TYPE}_x64_linux_hotspot_${VERSION}.tar.gz"; \
 			ZLIB_URL='http://archive.ubuntu.com/ubuntu/pool/main/z/zlib/zlib1g_1.2.11.dfsg-2ubuntu1_amd64.deb'; \
 			GLIBC_ARCH='x86_64'; \
 			glibc_setup () { \
@@ -161,28 +163,34 @@ RUN mkdir -p /lib /lib64 /usr/glibc-compat/lib/locale /usr/glibc-compat/lib64 /e
 		tar xvf data.tar.xz; \
 		mv lib/$(ls lib)/* /usr/glibc-compat/lib/; \
 
-        # ---------- STRIP START ----------
-		# OpenJDK - Slim Java
-        if [ "$SLIM" = "yes" ]; \
-        then \
-        # Download stuff
-        echo "[Java Slim Build] Downloading..."; \
-		mkdir -p /tmp/slim; \
-        wget https://raw.githubusercontent.com/Prouser123/openjdk-alpine-docker/master/slim-java-14/slim-java.sh -P /tmp/slim/; \
-        wget https://raw.githubusercontent.com/Prouser123/openjdk-alpine-docker/master/slim-java-14/slim-java_bin_del.list -P /tmp/slim/; \
-        wget https://raw.githubusercontent.com/Prouser123/openjdk-alpine-docker/master/slim-java-14/slim-java_jmod_del.list -P /tmp/slim/; \
-        wget https://raw.githubusercontent.com/Prouser123/openjdk-alpine-docker/master/slim-java-14/slim-java_lib_del.list -P /tmp/slim/; \
-        wget https://raw.githubusercontent.com/Prouser123/openjdk-alpine-docker/master/slim-java-14/slim-java_rtjar_del.list -P /tmp/slim/; \
-        wget https://raw.githubusercontent.com/Prouser123/openjdk-alpine-docker/master/slim-java-14/slim-java_rtjar_keep.list -P /tmp/slim/; \
-		# Strip java
-        echo "[Java Slim Build] Stripping..."; \
-        chmod +x /tmp/slim/slim-java.sh; \
-		apk add --no-cache --virtual .build-deps bash binutils; \
-		/tmp/slim/slim-java.sh /opt/java/openjdk/; \
-		rm -rf /tmp/slim; \
-		apk del --purge .build-deps; \
-        fi; \
-        # ---------- STRIP END   ----------
+		# ---------- NEEDSJLINK START ----------
+		# $NEEDSJLINK
+		# Some images (namely Termurin 16) do not have a JRE, so we need to run jlink to generate one
+		# You may recall that Temurin / Adoptium were due to stop making JRE builds, but this was reverted.
+		# See platform-matrix-header.txt for details.
+		if [ "$NEEDSJLINK" = "yes" ]; \
+		then \
+		echo "[jlink] Building... (with set -x)"; \
+		set -x; \
+		# We are going to try to recreate the 'legacy' JRE builds that Adoptium create.
+		# https://blog.adoptium.net/2021/10/jlink-to-produce-own-runtime/#:~:text=shown%20in%20the-,following%20command%3A,-jdk%2D17%2B35
+		# Excluding: 
+		# - jdk.internal.vm.ci (not available on all platforms)
+		# - jdk.internal.vm.compiler (not found - not present in upstream build?)
+		#   - jdk.internal.vm.compiler.management
+		_JAVA_OPTIONS="-Djdk.lang.Process.launchMechanism=vfork" jlink --add-modules java.base,java.compiler,java.datatransfer,java.desktop,java.instrument,java.logging,java.management,java.management.rmi,java.naming,java.net.http,java.prefs,java.rmi,java.scripting,java.se,java.security.jgss,java.security.sasl,java.smartcardio,java.sql,java.sql.rowset,java.transaction.xa,java.xml,java.xml.crypto,jdk.accessibility,jdk.charsets,jdk.crypto.cryptoki,jdk.crypto.ec,jdk.dynalink,jdk.httpserver,jdk.incubator.foreign,jdk.incubator.vector,jdk.jdwp.agent,jdk.jfr,jdk.jsobject,jdk.localedata,jdk.management,jdk.management.agent,jdk.management.jfr,jdk.naming.dns,jdk.naming.rmi,jdk.net,jdk.nio.mapmode,jdk.sctp,jdk.security.auth,jdk.security.jgss,jdk.unsupported,jdk.xml.dom,jdk.zipfs \
+			  --output /opt/java/openjdk-jre \
+			  --strip-debug \
+			  --no-man-pages \
+			  --no-header-files \
+			  --compress=2; \
+		
+		# Now we delete the old (jdk) and replace it with the new JRE equivalent.
+		rm -rf /opt/java/openjdk/; \
+		mv /opt/java/openjdk-jre /opt/java/openjdk; \
+		set +x; \
+		fi; \
+		# ---------- NEEDSJLINK END -------
 		
 		# Run strip on stuff
 		strip /usr/glibc-compat/sbin/**; \

@@ -1,0 +1,23 @@
+# Be careful about editing this file!
+# Parts of this file are edited by a script / CI to have the latest values.
+# -------------------------
+# Prouser123/OpenJDK-Alpine-Docker platform matrix.
+# -------------------------
+# linux/386, linux/arm temporarily disabled.
+# linux/ppc64le currently does not work due to an unknown privilege violation. (might be qemu?)
+# -------------------------
+# Java 8 notice(s)
+# 1. The latest version is 8u282-b08 but we can't use it at this time to to asset naming incompatibilities
+# There are also incompatabilities with 8u275-b01 on armv7 (libatomic, then "Inconsistency detected by ld.so: dl-lookup.c: 110: check_match: Assertion `version->filename == NULL || ! _dl_name_match_p (version->filename, map)' failed!")
+# 8u265-b01 will be used instead
+#
+# 2. Adoptium no longer builds Java 8 images for s390x.
+# -------------------------
+# JDKs
+# linux/s390x throws SIGILL, so has been disabled.
+# -------------------------
+# JREs
+# Adoptium originally planned to stop shipping JRE builds in Java 17+, but this decision has been reverted.
+# See: https://github.com/adoptium/temurin-build/issues/2683#issuecomment-999651390
+# However, since Java 16 builds are no longer being created, it does not have a JRE available. Instead we will use jlink to build a JRE equivalent ourselves.
+# -------------------------
