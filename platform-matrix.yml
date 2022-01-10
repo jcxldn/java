@@ -20,7 +20,7 @@
   arch: linux/amd64,linux/arm64,linux/armhf,linux/s390x
   org: adoptium
   repo: temurin16-binaries
-  type: temurin16-jre
+  type: OpenJDK16U-jdk
   slim: no
   jdk78fix: no
   esums:
@@ -102,7 +102,7 @@
   arch: linux/amd64,linux/arm64,linux/armhf
   org: adoptium
   repo: temurin16-binaries
-  type: temurin16-jdk
+  type: OpenJDK16U-jdk
   slim: no
   jdk78fix: no
   esums:
