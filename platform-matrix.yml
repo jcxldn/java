@@ -151,7 +151,7 @@
     armv7: 7721ef81416af8122a28448f3d661eb4bda40a9f78d400e4ecc55b58e627a00c
   tag: jdk-16.0.2%2B7
   version: 16.0.2_7
-  needs-jlink: yes
+  needs-jlink: no
 15-jdk:
   arch: linux/amd64,linux/arm64,linux/armhf
   org: AdoptOpenJDK

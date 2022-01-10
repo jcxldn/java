@@ -127,7 +127,7 @@ const dockerArchToAdoptArch = (arch) => {
                 // If this variant does not have a JRE, set a flag in the yml
                 // to instruct the builder to run jlink and create a JRE.
                 // (See above definition for more details)
-                output[key]["needs-jlink"] = (!hasJre) ? "yes" : "no"
+                output[key]["needs-jlink"] = (!hasJre) && (variant == "jre") ? "yes" : "no"
               
                 // Set esum (checksum) for each platform
                 output[key]["esums"][(arch.split("/")[1]).replace("armhf", "armv7")] = found.binary.package.checksum
