@@ -1,6 +1,9 @@
 import fetch from "node-fetch"
 import yaml from "yaml"
 import fs from "fs/promises"
+import log from "npmlog"
+
+log.addLevel('loop', 2250, { bold: true })
 
 const API_VENDORS = {
     "adoptium": "https://api.adoptium.net/v3",
@@ -60,14 +63,15 @@ const dockerArchToAdoptArch = (arch) => {
 
     // Iterate through each java release (8, 11, 16, etc)
     for (const platform in platforms) {
+        log.loop('platforms', `Found platform: ${platform}`)
     //Object.keys(platforms).forEach(platform => {
 
         // Iterate through each vendor (adoptopenjdk, adoptium)
         for (const vendor in platforms[platform]) {
         //vendors.forEach(async vendor => {
-            console.log(`Platform: Java ${platform} on ${vendor}`);
+            log.loop('platforms.vendors',`Platform: Java ${platform} on ${vendor}`);
             const base_url = API_VENDORS[vendor]
-            console.log(`Using API: ${base_url}`)
+            log.info('platforms.vendors', `Using API: ${base_url}`);
 
             // 1. Query the API for assets for this release
             const res = await fetch(`${base_url}/assets/latest/${platform}/hotspot`);
@@ -77,19 +81,19 @@ const dockerArchToAdoptArch = (arch) => {
 
           // 2.. Iterate through each variant (jre, jdk, jdk-slim)
           platforms[platform][vendor].forEach((variant) => {
-            console.log(`Variant: ${variant}`);
+            log.loop('platforms.vendors.variants', `Variant: ${variant}`);
 
             // 1: Get list of arches for this variant
             // Remove -slim suffix from the variant name
             const archStr = platformMatrix[`${platform}-${variant.split("-slim")[0]}`].arch;
             const archArr = archStr.split(",");
 
-            console.log(archArr);
+            log.verbose('platforms.vendors.variants.arch.list', archArr);
 
             // Iterate through each arch
             archArr.forEach((arch) => {
               const adoptArch = dockerArchToAdoptArch(arch);
-              console.log(`Arch: ${adoptArch} (${arch})`);
+              log.info('platforms.vendors.variants.arch', `Arch: ${adoptArch} (${arch})`);
 
               // Find something
               const found = data.find((query) =>
@@ -99,27 +103,11 @@ const dockerArchToAdoptArch = (arch) => {
                 })
               );
 
-              console.log("FOUND DATA");
-              console.log(found.binary.package.checksum);
-              console.log(encodeURIComponent(found.release_name));
+              //console.log("FOUND DATA");
+              //console.log(found.binary.package.checksum);
+              //console.log(encodeURIComponent(found.release_name));
             });
           });
         }
     }
-
-
-
-/*
-    const res = await fetch(getUrl("assets/latest/16/hotspot"));
-    const json = await res.json();
-    
-    // Iterate through each binary
-    json.forEach(binaryObj => {
-        if (
-            imageTypes.includes(binaryObj.binary.image_type) && // Ignore testimages
-            osTypes.includes(binaryObj.binary.os) // Only get linux images
-        ) {
-            //console.log(binaryObj.binary)
-        }
-    })*/
 })()
