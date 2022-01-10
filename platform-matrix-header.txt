@@ -1,3 +1,6 @@
+# Be careful about editing this file!
+# Parts of this file are edited by a script / CI to have the latest values.
+# -------------------------
 # Prouser123/OpenJDK-Alpine-Docker platform matrix.
 # -------------------------
 # linux/386, linux/arm temporarily disabled.
