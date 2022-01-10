@@ -110,9 +110,14 @@ const dockerArchToAdoptArch = (arch) => {
                   architecture: adoptArch,
                   image_type,
                 })
-                );
-                
-                const key = `${platform}-${variant}`
+              );
+              
+              // Now we can update the values
+              const key = `${platform}-${variant}`;
+              if (platformMatrix[key]["updater-ignore"]) {
+                log.warn("platforms.vendors.variants.arch", `Platform ${key} has updater-ignore set. Moving to next item in the loop...`);
+                return; // Since we're in a forEach loop, return is functionally equivalent to continue; in a for loop.
+              }
                 if (!output[key]) output[key] = {}
                 if (!output[key]["esums"]) output[key]["esums"] = {}
               
