@@ -84,8 +84,8 @@
     amd64: 9bce39f63d24626da75778f240294fa466a0ed117e32db798164621fe30b0723
     arm64: 2f9c5be1bf704f1233bcf96b8c02524c14dc4d43dc80c4926856091961b79948
     armv7: 4ac2503725b2729ec245dbdb000b2486f9c73ae86860c9525f9ac822ec81f0d6
-  tag: jdk8u312-b07
-  version: 8u312b07
+  tag: jdk8u265-b01
+  version: 8u265b01
 14-jdk-slim:
   arch: linux/amd64,linux/arm64,linux/armhf
   org: AdoptOpenJDK
