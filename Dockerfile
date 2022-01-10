@@ -64,7 +64,7 @@ RUN mkdir -p /lib /lib64 /usr/glibc-compat/lib/locale /usr/glibc-compat/lib64 /e
 				ln -sfn /lib/libc.musl-armv7.so.1 /usr/glibc-compat/lib; \
 				# OpenJDK 7 + 8 | s390x, armv7 - install libffi, libgcc
 				apk add --no-cache libffi libgcc; \
-				ln -s /usr/lib/libffi.so.8 /usr/lib/libffi.so.6;
+				ln -s /usr/lib/libffi.so.8 /usr/lib/libffi.so.6; \
 				ln -s /usr/lib/libffi.so.8 /usr/lib/libffi.so.7; \
 				ln -s /usr/lib/libffi.so.8 /usr/glibc-compat/lib/libffi.so.6; \
 				ln -s /usr/lib/libgcc_s.so.1 /usr/glibc-compat/lib/libgcc_s.so.1; \
@@ -111,7 +111,7 @@ RUN mkdir -p /lib /lib64 /usr/glibc-compat/lib/locale /usr/glibc-compat/lib64 /e
 				ln -sfn /lib/libc.musl-s390x.so.1 /usr/glibc-compat/lib; \
 				# OpenJDK 7 + 8 | s390x, armv7 - install libffi, libgcc
 				apk add --no-cache libffi libgcc; \
-				ln -s /usr/lib/libffi.so.8 /usr/lib/libffi.so.6;
+				ln -s /usr/lib/libffi.so.8 /usr/lib/libffi.so.6; \
 				ln -s /usr/lib/libffi.so.8 /usr/lib/libffi.so.7; \
 				ln -s /usr/lib/libffi.so.8 /usr/glibc-compat/lib/libffi.so.6; \
 				ln -s /usr/lib/libgcc_s.so.1 /usr/glibc-compat/lib/libgcc_s.so.1; \
