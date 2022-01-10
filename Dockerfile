@@ -1,6 +1,6 @@
 # JCX Matrix-Compatible Dockerfile
 
-FROM alpine:3.12
+FROM alpine:3.15
 
 # Set env variables for java to work properly
 ENV JAVA_HOME=/opt/java/openjdk \
