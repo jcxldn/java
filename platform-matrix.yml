@@ -141,6 +141,7 @@
   arch: linux/amd64,linux/arm64,linux/armhf
   org: adoptium
   repo: temurin11-binaries
+  type: OpenJDK11U-jdk
   version: 11.0.13_8
   slim: no
   jdk78fix: no
