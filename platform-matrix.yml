@@ -18,9 +18,9 @@
 # -------------------------
 16-jre:
   arch: linux/amd64,linux/arm64,linux/armhf,linux/s390x
-  org: AdoptOpenJDK
-  repo: openjdk16-binaries
-  type: OpenJDK16-jre
+  org: adoptium
+  repo: temurin16-binaries
+  type: temurin16-jre
   slim: no
   jdk78fix: no
   esums:
@@ -34,7 +34,7 @@
   arch: linux/amd64,linux/arm64,linux/armhf,linux/s390x
   org: AdoptOpenJDK
   repo: openjdk15-binaries
-  type: OpenJDK15U-jre
+  type: OpenJDK15U-jdk
   slim: no
   jdk78fix: no
   esums:
@@ -48,7 +48,7 @@
   arch: linux/amd64,linux/arm64,linux/armhf,linux/s390x
   org: AdoptOpenJDK
   repo: openjdk14-binaries
-  type: OpenJDK14U-jre
+  type: OpenJDK14U-jdk
   slim: no
   jdk78fix: no
   esums:
@@ -60,9 +60,9 @@
   version: 14.0.2_12
 11-jre:
   arch: linux/amd64,linux/arm64,linux/armhf,linux/s390x
-  org: AdoptOpenJDK
-  repo: openjdk11-binaries
-  type: OpenJDK11U-jre
+  org: adoptium
+  repo: temurin11-binaries
+  type: OpenJDK11U-jdk
   slim: no
   jdk78fix: no
   esums:
@@ -74,9 +74,9 @@
   version: 11.0.13_8
 8-jre:
   arch: linux/amd64,linux/arm64,linux/armhf
-  org: AdoptOpenJDK
-  repo: openjdk8-binaries
-  type: OpenJDK8U-jre
+  org: adoptium
+  repo: temurin8-binaries
+  type: OpenJDK8U-jdk
   slim: no
   jdk78fix: yes
   esums:
@@ -100,9 +100,9 @@
   version: 14.0.2_12
 16-jdk:
   arch: linux/amd64,linux/arm64,linux/armhf
-  org: AdoptOpenJDK
-  repo: openjdk16-binaries
-  type: OpenJDK16-jdk
+  org: adoptium
+  repo: temurin16-binaries
+  type: temurin16-jdk
   slim: no
   jdk78fix: no
   esums:
@@ -139,8 +139,8 @@
   version: 14.0.2_12
 11-jdk:
   arch: linux/amd64,linux/arm64,linux/armhf
-  org: AdoptOpenJDK
-  repo: openjdk11-binaries
+  org: adoptium
+  repo: temurin11-binaries
   version: 11.0.13_8
   slim: no
   jdk78fix: no
@@ -151,8 +151,8 @@
   tag: jdk-11.0.13%2B8
 8-jdk:
   arch: linux/amd64,linux/arm64,linux/armhf
-  org: AdoptOpenJDK
-  repo: openjdk8-binaries
+  org: adoptium
+  repo: temurin8-binaries
   type: OpenJDK8U-jdk
   slim: no
   jdk78fix: yes
