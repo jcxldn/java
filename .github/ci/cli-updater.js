@@ -2,6 +2,7 @@ import fetch from "node-fetch"
 import yaml from "yaml"
 import fs from "fs/promises"
 import log from "npmlog"
+import merge from "lodash/merge.js"
 
 log.addLevel('loop', 2250, { bold: true })
 
@@ -35,9 +36,9 @@ const dockerArchToAdoptArch = (arch) => {
     }
 }
 
-
 (async () => {
     // Main async loop
+    const output = {}
 
     // 1. Parse "platform-matrix.yml"
     const platformMatrix = yaml.parse(
@@ -101,13 +102,48 @@ const dockerArchToAdoptArch = (arch) => {
                   architecture: adoptArch,
                   image_type: variant.split("-slim")[0],
                 })
-              );
+                );
+                
+                const key = `${platform}-${variant}`
+                if (!output[key]) output[key] = {}
+                if (!output[key]["esums"]) output[key]["esums"] = {}
+              
+                // Set esum (checksum) for each platform
+                output[key]["esums"][(arch.split("/")[1]).replace("armhf", "armv7")] = found.binary.package.checksum
 
-              //console.log("FOUND DATA");
-              //console.log(found.binary.package.checksum);
-              //console.log(encodeURIComponent(found.release_name));
+                // Set tag
+                const tag = encodeURIComponent(found.release_name)
+                // Make sure we aren't overwriting an already set tag with other data
+                if (output[key].tag != undefined && output[key].tag != tag) {
+                    log.error("tag mismatch detected!")
+                    console.log(tag)
+                    process.exit(1)
+                }
+                output[key].tag = tag
+                
+                // Get version (from download url)
+                const version = found.binary.package.name.split("hotspot_")[1].split(".tar.gz")[0]
+
+                // Set version
+                // Make sure we aren't overwriting anything
+                if (output[key].version != undefined && output[key].version != version) {
+                    log.error("version mismatch detected!")
+                    process.exit(2)
+                }
+
+                output[key].version = version
             });
           });
         }
     }
+    // Merge the data from the original yml file and our new data.
+    const mergedData = merge(platformMatrix, output);
+    // Done! Let's write the output object back to the yml file
+    //console.log(JSON.stringify(mergedData))
+    console.log(yaml.stringify(mergedData))
+
+    const header = await fs.readFile("../../platform-matrix-header.txt", { encoding: "utf-8" })
+    // Overwrite the yml file with new data
+    await fs.writeFile("../../platform-matrix.yml", header + yaml.stringify(mergedData))
+    
 })()
