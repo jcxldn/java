@@ -95,13 +95,16 @@ const dockerArchToAdoptArch = (arch) => {
             archArr.forEach((arch) => {
               const adoptArch = dockerArchToAdoptArch(arch);
               log.info('platforms.vendors.variants.arch', `Arch: ${adoptArch} (${arch})`);
+              
+              let image_type = variant.split("-slim")[0]
 
-              // Determine image type
-              let image_type = undefined
-              if (vendor == "AdoptOpenJDK") {
-                image_type = variant.split("-slim")[0]
-              } else if (vendor == "adoptium") {
-                image_type = "jdk" // adoptium does not build a JRE.
+              // Although the decision to stop building JREs has been reversed,
+              //Java 16 builds (being EoL) do not have a JRE.
+              let hasJre = true;
+              if (vendor == "adoptium" && platform == "16") {
+                log.warn("edgecase", "Termurin 16 does not have a JRE! Using jdk for image_type...");
+                image_type = "jdk"
+                hasJre = false;
               }
 
               // Find something
@@ -120,6 +123,11 @@ const dockerArchToAdoptArch = (arch) => {
               }
                 if (!output[key]) output[key] = {}
                 if (!output[key]["esums"]) output[key]["esums"] = {}
+                
+                // If this variant does not have a JRE, set a flag in the yml
+                // to instruct the builder to run jlink and create a JRE.
+                // (See above definition for more details)
+                output[key]["needs-jlink"] = (!hasJre) ? "yes" : "no"
               
                 // Set esum (checksum) for each platform
                 output[key]["esums"][(arch.split("/")[1]).replace("armhf", "armv7")] = found.binary.package.checksum

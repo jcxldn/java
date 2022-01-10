@@ -52,4 +52,5 @@ jobs:
             --build-arg VERSION=$(yq r platform-matrix.yml ${{ matrix.version }}.version) \
             --build-arg SLIM=$(yq r platform-matrix.yml ${{ matrix.version }}.slim) \
             --build-arg JDK78FIX=$(yq r platform-matrix.yml ${{ matrix.version }}.jdk78fix) \
+            --build-arg NEEDSJLINK=$(yq r platform-matrix.yml ${{ matrix.version }}.needs-jlink) \
             -f Dockerfile -t jcxldn/openjdk-alpine:${{ matrix.version }} .

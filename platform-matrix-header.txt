@@ -16,3 +16,8 @@
 # JDKs
 # linux/s390x throws SIGILL, so has been disabled.
 # -------------------------
+# JREs
+# Adoptium originally planned to stop shipping JRE builds in Java 17+, but this decision has been reverted.
+# See: https://github.com/adoptium/temurin-build/issues/2683#issuecomment-999651390
+# However, since Java 16 builds are no longer being created, it does not have a JRE available. Instead we will use jlink to build a JRE equivalent ourselves.
+# -------------------------

@@ -19,6 +19,7 @@ ARG TAG
 ARG VERSION
 ARG SLIM
 ARG JDK78FIX
+ARG NEEDSJLINK
 
 
 
@@ -161,6 +162,29 @@ RUN mkdir -p /lib /lib64 /usr/glibc-compat/lib/locale /usr/glibc-compat/lib64 /e
 		ar vx zlib.deb; \
 		tar xvf data.tar.xz; \
 		mv lib/$(ls lib)/* /usr/glibc-compat/lib/; \
+
+		# ---------- NEEDSJLINK START ----------
+		# $NEEDSJLINK
+		# Some images (namely Termurin 16) do not have a JRE, so we need to run jlink to generate one
+		# You may recall that Temurin / Adoptium were due to stop making JRE builds, but this was reverted.
+		# See platform-matrix-header.txt for details.
+		if [ "$NEEDSJLINK" = "yes" ]; \
+		then \
+		mkdir -p /opt/java/openjdk-jre
+		# We are going to try to recreate the 'legacy' JRE builds that Adoptium create.
+		# https://blog.adoptium.net/2021/10/jlink-to-produce-own-runtime/#:~:text=shown%20in%20the-,following%20command%3A,-jdk%2D17%2B35
+		jlink --add-modules java.base,java.compiler,java.datatransfer,java.desktop,java.instrument,java.logging,java.management,java.management.rmi,java.naming,java.net.http,java.prefs,java.rmi,java.scripting,java.se,java.security.jgss,java.security.sasl,java.smartcardio,java.sql,java.sql.rowset,java.transaction.xa,java.xml,java.xml.crypto,jdk.accessibility,jdk.charsets,jdk.crypto.cryptoki,jdk.crypto.ec,jdk.dynalink,jdk.httpserver,jdk.incubator.foreign,jdk.incubator.vector,jdk.internal.vm.ci,jdk.internal.vm.compiler,jdk.internal.vm.compiler.management,jdk.jdwp.agent,jdk.jfr,jdk.jsobject,jdk.localedata,jdk.management,jdk.management.agent,jdk.management.jfr,jdk.naming.dns,jdk.naming.rmi,jdk.net,jdk.nio.mapmode,jdk.sctp,jdk.security.auth,jdk.security.jgss,jdk.unsupported,jdk.xml.dom,jdk.zipfs \
+			  --output /opt/java/openjdk-jre \
+			  --strip-debug \
+			  --no-man-pages \
+			  --no-header-files \
+			  --compress=2; \
+		
+		# Now we delete the old (jdk) and replace it with the new JRE equivalent.
+		rm -rf /opt/java/openjdk/; \
+		mv /opt/java/openjdk-jre /opt/java/openjdk; \
+		fi; \
+		# ---------- NEEDSJLINK END ----------
 
         # ---------- STRIP START ----------
 		# OpenJDK - Slim Java
