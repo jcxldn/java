@@ -2,6 +2,10 @@ name: docker
 
 on: [push, workflow_dispatch]
 
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
 jobs:
   buildx-adoptium-musl:
     runs-on: ubuntu-latest
@@ -54,4 +58,4 @@ jobs:
             --build-arg TYPE=$(yq ".${{ matrix.version }}.type" adoptium/platform-matrix.yml) \
             --build-arg TAG=$(yq ".${{ matrix.version }}.tag" adoptium/platform-matrix.yml) \
             --build-arg VERSION=$(yq ".${{ matrix.version }}.version" adoptium/platform-matrix.yml) \
-            -f adoptium/Dockerfile.musl -t ghcr.ios/jcxldn/java:${{ matrix.version }} .
+            -f adoptium/Dockerfile.musl -t ghcr.io/jcxldn/java:${{ matrix.version }} .
