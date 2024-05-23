@@ -38,7 +38,7 @@ jobs:
         name: Run Buildx (${{ matrix.version }}-glibc)
         run: |
           docker buildx build \
-            --platform $(yq r platform-matrix.yml ${{ matrix.version }}.arch) \
+            --platform $(yq r '.${{ matrix.version }}.arch' platform-matrix.yml) \
             --output "type=image,push=$([[ $GITHUB_REF == "refs/heads/master" ]] && echo true || echo false)" \
             --build-arg ESUM=$(yq r platform-matrix.yml ${{ matrix.version }}.esums.amd64) \
             --build-arg ORG=$(yq r platform-matrix.yml ${{ matrix.version }}.org) \
@@ -82,7 +82,7 @@ jobs:
         name: Run Buildx (${{ matrix.version }}-glibc)
         run: |
           docker buildx build \
-            --platform $(yq r platform-matrix.yml ${{ matrix.version }}.arch) \
+            --platform $(yq r '.${{ matrix.version }}.arch' platform-matrix.yml) \
             --output "type=image,push=$([[ $GITHUB_REF == "refs/heads/master" ]] && echo true || echo false)" \
             --build-arg ARM64_ESUM=$(yq r platform-matrix.yml ${{ matrix.version }}.esums.arm64) \
             --build-arg ARMV7_ESUM=$(yq r platform-matrix.yml ${{ matrix.version }}.esums.armv7) \
