@@ -19,7 +19,7 @@ const findAsset = (
         && asset.binary.os == os
         && asset.binary.heap_size == heap_size
         && asset.binary.architecture == architecture
-        && asset.binary.image_type == image_type.replace("-glibc", "").replace("-musl", "") ;
+        && asset.binary.image_type == image_type.replace("-adoptium-glibc", "").replace("-adoptium-musl", "") ;
 };
 
 const dockerArchToAdoptArch = (arch) => {
@@ -45,7 +45,7 @@ const dockerArchToAdoptArch = (arch) => {
 
     // 1. Parse "platform-matrix.yml"
     const platformMatrix = yaml.parse(
-      await fs.readFile("../../platform-matrix-template.yml", { encoding: "utf-8" })
+      await fs.readFile("../platform-matrix-template.yml", { encoding: "utf-8" })
     );
     //console.log(platformMatrix)
 
@@ -170,8 +170,8 @@ const dockerArchToAdoptArch = (arch) => {
     //console.log(JSON.stringify(mergedData))
     console.log(yaml.stringify(mergedData))
 
-    const header = await fs.readFile("../../platform-matrix-header.txt", { encoding: "utf-8" })
+    const header = await fs.readFile("../platform-matrix-header.txt", { encoding: "utf-8" })
     // Overwrite the yml file with new data
-    await fs.writeFile("../../platform-matrix.yml", header + yaml.stringify(mergedData))
+    await fs.writeFile("../platform-matrix.yml", header + yaml.stringify(mergedData))
     
 })()
