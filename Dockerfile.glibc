@@ -6,7 +6,8 @@ FROM alpine:latest
 ENV JAVA_HOME=/opt/java/openjdk \
 	PATH="/opt/java/openjdk/bin:$PATH" \
 	GLIBC_VERSION="2.31-r1" \
-	LD_PRELOAD=/lib/lib/libgcompat.so.0
+	LD_PRELOAD=/lib/lib/libgcompat.so.0 \
+	LD_LIBRARY_PATH=/opt/java/openjdk/lib/server
 
 ARG ARM64_ESUM
 ARG ARMV7_ESUM
@@ -107,4 +108,5 @@ RUN mkdir -p /lib /lib64 /usr/glibc-compat/lib/locale /usr/glibc-compat/lib64 /e
 	rm -rf /tmp/zlib; \
 	echo "Done!"; \
 	cd /; \
-	LD_PRELOAD=/lib/lib/libgcompat.so.0 java -version;
+	ls /opt/java/openjdk/lib/server; \ 
+	LD_LIBRARY_PATH=/opt/java/openjdk/lib/server LD_PRELOAD=/lib/lib/libgcompat.so.0 java -version;
