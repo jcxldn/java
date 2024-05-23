@@ -3,19 +3,27 @@ name: docker
 on: [push, workflow_dispatch]
 
 jobs:
-  buildx-glibc:
+  buildx-adoptium-musl:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      attestations: write
     if: "!contains(github.event.head_commit.message, 'ci skip')"
     strategy:
       matrix: 
-        version: ["22-jdk-glibc", "22-jre-glibc", "21-jdk-glibc", "21-jre-glibc", "20-jdk-glibc", "20-jre-glibc", "19-jdk-glibc", "19-jre-glibc", "18-jdk-glibc", "18-jre-glibc", "17-jdk-glibc", "17-jre-glibc", "16-jdk-glibc", "16-jre-glibc", "11-jdk-glibc", "11-jre-glibc", "8-jdk-glibc", "8-jre-glibc"]
+        version: ["22-jdk-adoptium-musl", "22-jre-adoptium-musl", "21-jdk-adoptium-musl", "21-jre-adoptium-musl"]
     steps:
       -
         name: Checkout
         uses: actions/checkout@v1
       -
-        name: Login to Docker Hub
-        run: echo "${{ secrets.REGISTRY_PASSWORD }}" | docker login -u "${{ secrets.REGISTRY_USERNAME }}" --password-stdin
+        name: Log in to the Container registry
+        uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
         if: github.ref == 'refs/heads/master'
       -
         name: Set up QEMU
@@ -35,64 +43,15 @@ jobs:
         name: Install yq (mikefarah, go)
         run: sudo su -c 'wget https://github.com/mikefarah/yq/releases/download/v4.44.1/yq_linux_amd64 -O /usr/bin/yq && chmod +x /usr/bin/yq'
       -
-        name: Run Buildx (${{ matrix.version }}-glibc)
+        name: Run Buildx (${{ matrix.version }}-adoptium-musl)
         run: |
           docker buildx build \
-            --platform $(yq '.${{ matrix.version }}.arch' platform-matrix.yml) \
+            --platform $(yq '.${{ matrix.version }}.arch' adoptium/platform-matrix.yml) \
             --output "type=image,push=$([[ $GITHUB_REF == "refs/heads/master" ]] && echo true || echo false)" \
-            --build-arg ARM64_ESUM=$(yq ".${{ matrix.version }}.esums.arm64" platform-matrix.yml) \
-            --build-arg ARMV7_ESUM=$(yq ".${{ matrix.version }}.esums.armv7" platform-matrix.yml) \
-            --build-arg PPC64LE_ESUM=$(yq ".${{ matrix.version }}.esums.ppc64le" platform-matrix.yml) \
-            --build-arg S390X_ESUM=$(yq ".${{ matrix.version }}.esums.s390x" platform-matrix.yml) \
-            --build-arg AMD64_ESUM=$(yq ".${{ matrix.version }}.esums.amd64" platform-matrix.yml) \
-            --build-arg ORG=$(yq ".${{ matrix.version }}.org" platform-matrix.yml) \
-            --build-arg REPO=$(yq ".${{ matrix.version }}.repo" platform-matrix.yml) \
-            --build-arg TYPE=$(yq ".${{ matrix.version }}.type" platform-matrix.yml) \
-            --build-arg TAG=$(yq ".${{ matrix.version }}.tag" platform-matrix.yml) \
-            --build-arg VERSION=$(yq ".${{ matrix.version }}.version" platform-matrix.yml) \
-            --build-arg NEEDSJLINK=$(yq ".${{ matrix.version }}.needs-jlink" platform-matrix.yml) \
-            -f Dockerfile.glibc -t jcxldn/openjdk-alpine:${{ matrix.version }} .
-  buildx-musl:
-    runs-on: ubuntu-latest
-    if: "!contains(github.event.head_commit.message, 'ci skip')"
-    strategy:
-      matrix: 
-        version: ["22-jdk-musl", "22-jre-musl", "21-jdk-musl", "21-jre-musl"]
-    steps:
-      -
-        name: Checkout
-        uses: actions/checkout@v1
-      -
-        name: Login to Docker Hub
-        run: echo "${{ secrets.REGISTRY_PASSWORD }}" | docker login -u "${{ secrets.REGISTRY_USERNAME }}" --password-stdin
-        if: github.ref == 'refs/heads/master'
-      -
-        name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
-        with:
-          platforms: all
-      -
-        name: Set up Docker Buildx
-        id: buildx
-        uses: docker/setup-buildx-action@v1
-        with:
-          version: latest
-      -
-        name: List Available platforms
-        run: echo ${{ steps.buildx.outputs.platforms }}
-      -
-        name: Install yq (mikefarah, go)
-        run: sudo su -c 'wget https://github.com/mikefarah/yq/releases/download/v4.44.1/yq_linux_amd64 -O /usr/bin/yq && chmod +x /usr/bin/yq'
-      -
-        name: Run Buildx (${{ matrix.version }}-musl)
-        run: |
-          docker buildx build \
-            --platform $(yq '.${{ matrix.version }}.arch' platform-matrix.yml) \
-            --output "type=image,push=$([[ $GITHUB_REF == "refs/heads/master" ]] && echo true || echo false)" \
-            --build-arg ESUM=$(yq ".${{ matrix.version }}.esums.amd64" platform-matrix.yml) \
-            --build-arg ORG=$(yq ".${{ matrix.version }}.org" platform-matrix.yml) \
-            --build-arg REPO=$(yq ".${{ matrix.version }}.repo" platform-matrix.yml) \
-            --build-arg TYPE=$(yq ".${{ matrix.version }}.type" platform-matrix.yml) \
-            --build-arg TAG=$(yq ".${{ matrix.version }}.tag" platform-matrix.yml) \
-            --build-arg VERSION=$(yq ".${{ matrix.version }}.version" platform-matrix.yml) \
-            -f Dockerfile.musl -t jcxldn/openjdk-alpine:${{ matrix.version }} .
+            --build-arg ESUM=$(yq ".${{ matrix.version }}.esums.amd64" adoptium/platform-matrix.yml) \
+            --build-arg ORG=$(yq ".${{ matrix.version }}.org" adoptium/platform-matrix.yml) \
+            --build-arg REPO=$(yq ".${{ matrix.version }}.repo" adoptium/platform-matrix.yml) \
+            --build-arg TYPE=$(yq ".${{ matrix.version }}.type" adoptium/platform-matrix.yml) \
+            --build-arg TAG=$(yq ".${{ matrix.version }}.tag" adoptium/platform-matrix.yml) \
+            --build-arg VERSION=$(yq ".${{ matrix.version }}.version" adoptium/platform-matrix.yml) \
+            -f adoptium/Dockerfile.musl -t ghcr.ios/jcxldn/java:${{ matrix.version }} .

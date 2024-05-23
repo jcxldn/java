@@ -22,7 +22,6 @@ RUN apk add --no-cache --virtual .fetch-deps curl binutils; \
     mkdir -p /opt/java/openjdk; \
     cd /opt/java/openjdk; \
     tar -xf /tmp/openjdk.tar.gz --strip-components=1; \
-
     # Cleaning up...
     apk del --purge .fetch-deps; \
     rm -rf /var/cache/apk/*; \

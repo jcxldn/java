@@ -1,0 +1,22 @@
+# Java 22
+22-jdk-musl:
+  arch: linux/amd64
+  org: adoptium
+  repo: temurin22-binaries
+  type: OpenJDK22U-jdk
+22-jre-musl:
+  arch: linux/amd64
+  org: adoptium
+  repo: temurin22-binaries
+  type: OpenJDK22U-jre
+# Java 21 (first for riscv64)
+21-jdk-musl:
+  arch: linux/amd64
+  org: adoptium
+  repo: temurin21-binaries
+  type: OpenJDK21U-jdk
+21-jre-musl:
+  arch: linux/amd64
+  org: adoptium
+  repo: temurin21-binaries
+  type: OpenJDK21U-jre
