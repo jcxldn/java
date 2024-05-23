@@ -13,7 +13,7 @@ ARG VERSION
 
 RUN apk add --no-cache --virtual .fetch-deps curl binutils; \
     ARCH="$(apk --print-arch)"; \
-    BINARY_URL="https://github.com/${ORG}/${REPO}/releases/download/${TAG}/${TYPE}_x64_linux_hotspot_${VERSION}.tar.gz"; \
+    BINARY_URL="https://github.com/${ORG}/${REPO}/releases/download/${TAG}/${TYPE}_x64_alpine-linux_hotspot_${VERSION}.tar.gz"; \
     # Download OpenJDK
     echo "Downloading OpenJDK with URL: $BINARY_URL"; \
     curl -LfsSo /tmp/openjdk.tar.gz $BINARY_URL; \
