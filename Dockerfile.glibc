@@ -107,4 +107,4 @@ RUN mkdir -p /lib /lib64 /usr/glibc-compat/lib/locale /usr/glibc-compat/lib64 /e
 	rm -rf /tmp/zlib; \
 	echo "Done!"; \
 	cd /; \
-	java -version;
+	LD_PRELOAD=/lib/lib/libgcompat.so.0 java -version;
