@@ -30,27 +30,33 @@ RUN mkdir -p /lib /lib64 /usr/glibc-compat/lib/locale /usr/glibc-compat/lib64 /e
 	case "${ARCH}" in \
 	aarch64|arm64) \
 	ESUM=$ARM64_ESUM; \
+	PRELOAD_ARCH=aarch64; \ 
 	BINARY_URL="https://github.com/${ORG}/${REPO}/releases/download/${TAG}/${TYPE}_aarch64_linux_hotspot_${VERSION}.tar.gz"; \
 	;; \
 	# Download glibc and link
 	armhf|armv7l|armv7) \
 	ESUM=$ARMV7_ESUM; \
+	PRELOAD_ARCH=arm; \ 
 	BINARY_URL="https://github.com/${ORG}/${REPO}/releases/download/${TAG}/${TYPE}_arm_linux_hotspot_${VERSION}.tar.gz"; \
 	;; \
 	ppc64el|ppc64le) \
 	ESUM=$PPC64LE_ESUM; \
+	PRELOAD_ARCH=ppc64le; \ 
 	BINARY_URL="https://github.com/${ORG}/${REPO}/releases/download/${TAG}/${TYPE}_ppc64le_linux_hotspot_${VERSION}.tar.gz"; \
 	;; \
 	s390x) \
 	ESUM=$S390X_ESUM; \
+	PRELOAD_ARCH=s390x; \ 
 	BINARY_URL="https://github.com/${ORG}/${REPO}/releases/download/${TAG}/${TYPE}_s390x_linux_hotspot_${VERSION}.tar.gz"; \
 	;; \
 	amd64|x86_64) \
 	ESUM=$AMD64_ESUM; \
+	PRELOAD_ARCH=amd64; \ 
 	BINARY_URL="https://github.com/${ORG}/${REPO}/releases/download/${TAG}/${TYPE}_x64_linux_hotspot_${VERSION}.tar.gz"; \
 	;; \
 	riscv64) \
 	ESUM=$RISCV_ESUM; \
+	PRELOAD_ARCH=riscv64; \ 
 	BINARY_URL="https://github.com/${ORG}/${REPO}/releases/download/${TAG}/${TYPE}_riscv64_linux_hotspot_${VERSION}.tar.gz"; \
 	;; \
 
