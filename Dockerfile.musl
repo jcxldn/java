@@ -1,0 +1,61 @@
+FROM alpine:3.19
+
+# Set env variables for java to work properly
+ENV JAVA_HOME=/opt/java/openjdk \
+    PATH="/opt/java/openjdk/bin:$PATH"
+
+ARG ARM64_ESUM
+ARG ARMV7_ESUM
+ARG PPC64LE_ESUM
+ARG S390X_ESUM
+ARG AMD64_ESUM
+ARG ORG
+ARG REPO
+ARG TYPE
+ARG TAG
+ARG VERSION
+ARG SLIM
+ARG JDK78FIX
+ARG NEEDSJLINK
+
+RUN mkdir -p /lib /lib64 /usr/glibc-compat/lib/locale /usr/glibc-compat/lib64 /etc; \
+    apk add --no-cache --virtual .fetch-deps curl binutils; \
+    ARCH="$(apk --print-arch)"; \
+    case "${ARCH}" in \
+    aarch64|arm64) \
+    ESUM=$ARM64_ESUM; \
+    ;; \
+    armhf|armv7l|armv7) \
+    ESUM=$ARMV7_ESUM; \
+    ;; \
+    ppc64el|ppc64le) \
+    ESUM=$PPC64LE_ESUM; \
+    ;; \
+    s390x) \
+    ESUM=$S390X_ESUM; \
+    ;; \
+    amd64|x86_64) \
+    ESUM=$AMD64_ESUM; \
+    ;; \
+    *) \
+    echo "Unsupported arch: ${ARCH}"; \
+    exit 1; \
+    ;; \
+    esac; \
+
+    # Download OpenJDK
+    echo "Downloading OpenJDK with URL: $BINARY_URL"; \
+    curl -LfsSo /tmp/openjdk.tar.gz $BINARY_URL; \
+    echo "Verifing download with checksum: $ESUM"; \
+    echo "${ESUM} */tmp/openjdk.tar.gz" | sha256sum -c -; \
+    mkdir -p /opt/java/openjdk; \
+    cd /opt/java/openjdk; \
+    tar -xf /tmp/openjdk.tar.gz --strip-components=1; \
+
+    # Cleaning up...
+    apk del --purge .fetch-deps; \
+    rm -rf /var/cache/apk/*; \
+    rm -rf /tmp/openjdk.tar.gz; \
+    echo "Done!"; \
+    cd /; \
+    java -version;

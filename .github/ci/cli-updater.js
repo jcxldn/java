@@ -15,12 +15,11 @@ const findAsset = (
   asset,
   { os = "linux", jvm_impl = "hotspot", heap_size="normal", architecture, image_type }
 ) => {
-  //console.log(asset.binary);
     return asset.binary.jvm_impl == jvm_impl
         && asset.binary.os == os
         && asset.binary.heap_size == heap_size
         && asset.binary.architecture == architecture
-        && asset.binary.image_type == image_type;
+        && asset.binary.image_type == image_type.replace("-glibc", "").replace("-musl", "") ;
 };
 
 const dockerArchToAdoptArch = (arch) => {
@@ -30,7 +29,11 @@ const dockerArchToAdoptArch = (arch) => {
         case "linux/arm64":
             return "aarch64"
         case "linux/armhf":
-            return "arm"
+          return "arm"
+        case "linux/ppc64le":
+          return "ppc64le"
+        case "linux/riscv64":
+          return "riscv64"
         case "linux/s390x":
             return "s390x"
     }
@@ -42,7 +45,7 @@ const dockerArchToAdoptArch = (arch) => {
 
     // 1. Parse "platform-matrix.yml"
     const platformMatrix = yaml.parse(
-      await fs.readFile("../../platform-matrix.yml", { encoding: "utf-8" })
+      await fs.readFile("../../platform-matrix-template.yml", { encoding: "utf-8" })
     );
     //console.log(platformMatrix)
 
@@ -76,7 +79,9 @@ const dockerArchToAdoptArch = (arch) => {
 
             // 1. Query the API for assets for this release
             const res = await fetch(`${base_url}/assets/latest/${platform}/hotspot`);
-            const data = await res.json();
+          const data = await res.json();
+          
+          debugger;
 
             //console.log(data)
 
@@ -109,7 +114,8 @@ const dockerArchToAdoptArch = (arch) => {
 
               // Find something
               const found = data.find((query) =>
-                findAsset(query, {
+                  findAsset(query, {
+                    os: image_type.includes("musl") ? "alpine-linux" : "linux",
                   architecture: adoptArch,
                   image_type,
                 })
@@ -135,7 +141,8 @@ const dockerArchToAdoptArch = (arch) => {
                 // Set tag
                 const tag = encodeURIComponent(found.release_name)
                 // Make sure we aren't overwriting an already set tag with other data
-                if (output[key].tag != undefined && output[key].tag != tag) {
+              if (output[key].tag != undefined && output[key].tag != tag) {
+                debugger;
                     log.error("tag mismatch detected!")
                     console.log(tag)
                     process.exit(1)

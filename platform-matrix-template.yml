@@ -1,0 +1,121 @@
+# Java 22
+# no linux/s390x as it is an older ver...
+22-jdk-glibc:
+  arch: linux/amd64,linux/arm64,linux/ppc64le,linux/riscv64
+  org: adoptium
+  repo: temurin22-binaries
+  type: OpenJDK22U-jdk
+22-jre-glibc:
+  arch: linux/amd64,linux/arm64,linux/ppc64le,linux/riscv64
+  org: adoptium
+  repo: temurin22-binaries
+  type: OpenJDK22U-jre
+22-jdk-musl:
+  arch: linux/amd64
+  org: adoptium
+  repo: temurin22-binaries
+  type: OpenJDK22U-jdk
+22-jre-musl:
+  arch: linux/amd64
+  org: adoptium
+  repo: temurin22-binaries
+  type: OpenJDK22U-jre
+# Java 21 (first for riscv64)
+21-jdk-glibc:
+  arch: linux/amd64,linux/arm64,linux/ppc64le,linux/riscv64
+  org: adoptium
+  repo: temurin21-binaries
+  type: OpenJDK21U-jdk
+21-jre-glibc:
+  arch: linux/amd64,linux/arm64,linux/ppc64le,linux/riscv64
+  org: adoptium
+  repo: temurin21-binaries
+  type: OpenJDK21U-jre
+21-jdk-musl:
+  arch: linux/amd64
+  org: adoptium
+  repo: temurin21-binaries
+  type: OpenJDK21U-jdk
+21-jre-musl:
+  arch: linux/amd64
+  org: adoptium
+  repo: temurin21-binaries
+  type: OpenJDK21U-jre
+# Java 20
+20-jdk-glibc:
+  arch: linux/amd64,linux/arm64
+  org: adoptium
+  repo: temurin20-binaries
+  type: OpenJDK20U-jdk
+20-jre-glibc:
+  arch: linux/amd64,linux/arm64
+  org: adoptium
+  repo: temurin20-binaries
+  type: OpenJDK20U-jre
+# Java 19 (last for armhf, s390x)
+19-jdk-glibc:
+  arch: linux/amd64,linux/arm64,linux/armhf,linux/s390x
+  org: adoptium
+  repo: temurin19-binaries
+  type: OpenJDK19U-jdk
+19-jre-glibc:
+  arch: linux/amd64,linux/arm64,linux/armhf,linux/s390x
+  org: adoptium
+  repo: temurin19-binaries
+  type: OpenJDK19U-jre
+# Java 18
+18-jdk-glibc:
+  arch: linux/amd64,linux/arm64,linux/armhf,linux/s390x
+  org: adoptium
+  repo: temurin18-binaries
+  type: OpenJDK18U-jdk
+18-jre-glibc:
+  arch: linux/amd64,linux/arm64,linux/armhf,linux/s390x
+  org: adoptium
+  repo: temurin18-binaries
+  type: OpenJDK18U-jre
+# Java 17
+17-jdk-glibc:
+  arch: linux/amd64,linux/arm64,linux/armhf,linux/s390x
+  org: adoptium
+  repo: temurin17-binaries
+  type: OpenJDK17U-jdk
+17-jre-glibc:
+  arch: linux/amd64,linux/arm64,linux/armhf,linux/s390x
+  org: adoptium
+  repo: temurin17-binaries
+  type: OpenJDK17U-jre
+# Java 16
+16-jdk-glibc:
+  arch: linux/amd64,linux/arm64,linux/armhf,linux/s390x
+  org: adoptium
+  repo: temurin16-binaries
+  type: OpenJDK16U-jdk
+16-jre-glibc:
+  arch: linux/amd64,linux/arm64,linux/armhf,linux/s390x
+  org: adoptium
+  repo: temurin16-binaries
+  type: OpenJDK16U-jdk
+  needs-jlink: yes # Java 16 does not ship any JREs
+# Java 11
+11-jdk-glibc:
+  arch: linux/amd64,linux/arm64,linux/armhf,linux/s390x
+  org: adoptium
+  repo: temurin11-binaries
+  type: OpenJDK11U-jdk
+11-jre-glibc:
+  arch: linux/amd64,linux/arm64,linux/armhf,linux/s390x
+  org: adoptium
+  repo: temurin11-binaries
+  type: OpenJDK11U-jre
+# Java 8
+8-jdk-glibc:
+  arch: linux/amd64,linux/arm64,linux/armhf
+  org: adoptium
+  repo: temurin8-binaries
+  type: OpenJDK8U-jdk
+8-jre-glibc:
+  arch: linux/amd64,linux/arm64,linux/armhf
+  org: adoptium
+  repo: temurin8-binaries
+  type: OpenJDK8U-jre
