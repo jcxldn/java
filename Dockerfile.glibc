@@ -6,8 +6,7 @@ FROM alpine:latest
 ENV JAVA_HOME=/opt/java/openjdk \
 	PATH="/opt/java/openjdk/bin:$PATH" \
 	GLIBC_VERSION="2.31-r1" \
-	LD_PRELOAD=/lib/lib/libgcompat.so.0 \
-	LD_LIBRARY_PATH=/opt/java/openjdk/lib/server
+	LD_PRELOAD=/lib/libgcompat.so.0
 
 ARG ARM64_ESUM
 ARG ARMV7_ESUM
@@ -30,33 +29,27 @@ RUN mkdir -p /lib /lib64 /usr/glibc-compat/lib/locale /usr/glibc-compat/lib64 /e
 	case "${ARCH}" in \
 	aarch64|arm64) \
 	ESUM=$ARM64_ESUM; \
-	PRELOAD_ARCH=aarch64; \ 
 	BINARY_URL="https://github.com/${ORG}/${REPO}/releases/download/${TAG}/${TYPE}_aarch64_linux_hotspot_${VERSION}.tar.gz"; \
 	;; \
 	# Download glibc and link
 	armhf|armv7l|armv7) \
 	ESUM=$ARMV7_ESUM; \
-	PRELOAD_ARCH=arm; \ 
 	BINARY_URL="https://github.com/${ORG}/${REPO}/releases/download/${TAG}/${TYPE}_arm_linux_hotspot_${VERSION}.tar.gz"; \
 	;; \
 	ppc64el|ppc64le) \
 	ESUM=$PPC64LE_ESUM; \
-	PRELOAD_ARCH=ppc64le; \ 
 	BINARY_URL="https://github.com/${ORG}/${REPO}/releases/download/${TAG}/${TYPE}_ppc64le_linux_hotspot_${VERSION}.tar.gz"; \
 	;; \
 	s390x) \
 	ESUM=$S390X_ESUM; \
-	PRELOAD_ARCH=s390x; \ 
 	BINARY_URL="https://github.com/${ORG}/${REPO}/releases/download/${TAG}/${TYPE}_s390x_linux_hotspot_${VERSION}.tar.gz"; \
 	;; \
 	amd64|x86_64) \
 	ESUM=$AMD64_ESUM; \
-	PRELOAD_ARCH=amd64; \ 
 	BINARY_URL="https://github.com/${ORG}/${REPO}/releases/download/${TAG}/${TYPE}_x64_linux_hotspot_${VERSION}.tar.gz"; \
 	;; \
 	riscv64) \
 	ESUM=$RISCV_ESUM; \
-	PRELOAD_ARCH=riscv64; \ 
 	BINARY_URL="https://github.com/${ORG}/${REPO}/releases/download/${TAG}/${TYPE}_riscv64_linux_hotspot_${VERSION}.tar.gz"; \
 	;; \
 
@@ -114,5 +107,4 @@ RUN mkdir -p /lib /lib64 /usr/glibc-compat/lib/locale /usr/glibc-compat/lib64 /e
 	rm -rf /tmp/zlib; \
 	echo "Done!"; \
 	cd /; \
-	ls /opt/java/openjdk/lib/server; \ 
-	LD_LIBRARY_PATH=/opt/java/openjdk/lib/server LD_PRELOAD=/lib/lib/libgcompat.so.0 java -version;
+	LD_PRELOAD=/lib/libgcompat.so.0 java -version;
