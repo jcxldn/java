@@ -50,7 +50,6 @@ jobs:
             --build-arg TYPE=$(yq ".${{ matrix.version }}.type" platform-matrix.yml) \
             --build-arg TAG=$(yq ".${{ matrix.version }}.tag" platform-matrix.yml) \
             --build-arg VERSION=$(yq ".${{ matrix.version }}.version" platform-matrix.yml) \
-            --build-arg JDK78FIX=$(yq ".${{ matrix.version }}.jdk78fix" platform-matrix.yml) \
             --build-arg NEEDSJLINK=$(yq ".${{ matrix.version }}.needs-jlink" platform-matrix.yml) \
             -f Dockerfile.glibc -t jcxldn/openjdk-alpine:${{ matrix.version }} .
   buildx-musl:
@@ -90,7 +89,7 @@ jobs:
           docker buildx build \
             --platform $(yq '.${{ matrix.version }}.arch' platform-matrix.yml) \
             --output "type=image,push=$([[ $GITHUB_REF == "refs/heads/master" ]] && echo true || echo false)" \
-            --build-arg ESUM=$(yq ".${{ matrix.version }}.esums.arm64" platform-matrix.yml) \
+            --build-arg ESUM=$(yq ".${{ matrix.version }}.esums.amd64" platform-matrix.yml) \
             --build-arg ORG=$(yq ".${{ matrix.version }}.org" platform-matrix.yml) \
             --build-arg REPO=$(yq ".${{ matrix.version }}.repo" platform-matrix.yml) \
             --build-arg TYPE=$(yq ".${{ matrix.version }}.type" platform-matrix.yml) \
