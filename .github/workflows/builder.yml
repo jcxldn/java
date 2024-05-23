@@ -33,7 +33,7 @@ jobs:
         run: echo ${{ steps.buildx.outputs.platforms }}
       -
         name: Install yq (mikefarah, go)
-        run: sudo su -c 'wget https://github.com/mikefarah/yq/releases/download/4.44.1/yq_linux_amd64 -O /usr/bin/yq && chmod +x /usr/bin/yq'
+        run: sudo su -c 'wget https://github.com/mikefarah/yq/releases/download/v4.44.1/yq_linux_amd64 -O /usr/bin/yq && chmod +x /usr/bin/yq'
       -
         name: Run Buildx (${{ matrix.version }}-glibc)
         run: |
@@ -77,7 +77,7 @@ jobs:
         run: echo ${{ steps.buildx.outputs.platforms }}
       -
         name: Install yq (mikefarah, go)
-        run: sudo su -c 'wget https://github.com/mikefarah/yq/releases/download/4.44.1/yq_linux_amd64 -O /usr/bin/yq && chmod +x /usr/bin/yq'
+        run: sudo su -c 'wget https://github.com/mikefarah/yq/releases/download/v4.44.1/yq_linux_amd64 -O /usr/bin/yq && chmod +x /usr/bin/yq'
       -
         name: Run Buildx (${{ matrix.version }}-glibc)
         run: |
