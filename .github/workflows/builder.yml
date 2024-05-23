@@ -33,25 +33,19 @@ jobs:
         run: echo ${{ steps.buildx.outputs.platforms }}
       -
         name: Install yq (mikefarah, go)
-        run: sudo su -c 'wget https://github.com/mikefarah/yq/releases/download/3.4.1/yq_linux_amd64 -O /usr/bin/yq && chmod +x /usr/bin/yq'
+        run: sudo su -c 'wget https://github.com/mikefarah/yq/releases/download/4.44.1/yq_linux_amd64 -O /usr/bin/yq && chmod +x /usr/bin/yq'
       -
         name: Run Buildx (${{ matrix.version }}-glibc)
         run: |
           docker buildx build \
             --platform $(yq r platform-matrix.yml ${{ matrix.version }}.arch) \
             --output "type=image,push=$([[ $GITHUB_REF == "refs/heads/master" ]] && echo true || echo false)" \
-            --build-arg ARM64_ESUM=$(yq r platform-matrix.yml ${{ matrix.version }}.esums.arm64) \
-            --build-arg ARMV7_ESUM=$(yq r platform-matrix.yml ${{ matrix.version }}.esums.armv7) \
-            --build-arg PPC64LE_ESUM=$(yq r platform-matrix.yml ${{ matrix.version }}.esums.ppc64le) \
-            --build-arg S390X_ESUM=$(yq r platform-matrix.yml ${{ matrix.version }}.esums.s390x) \
-            --build-arg AMD64_ESUM=$(yq r platform-matrix.yml ${{ matrix.version }}.esums.amd64) \
+            --build-arg ESUM=$(yq r platform-matrix.yml ${{ matrix.version }}.esums.amd64) \
             --build-arg ORG=$(yq r platform-matrix.yml ${{ matrix.version }}.org) \
             --build-arg REPO=$(yq r platform-matrix.yml ${{ matrix.version }}.repo) \
             --build-arg TYPE=$(yq r platform-matrix.yml ${{ matrix.version }}.type) \
             --build-arg TAG=$(yq r platform-matrix.yml ${{ matrix.version }}.tag) \
             --build-arg VERSION=$(yq r platform-matrix.yml ${{ matrix.version }}.version) \
-            --build-arg JDK78FIX=$(yq r platform-matrix.yml ${{ matrix.version }}.jdk78fix) \
-            --build-arg NEEDSJLINK=$(yq r platform-matrix.yml ${{ matrix.version }}.needs-jlink) \
             -f Dockerfile.glibc -t jcxldn/openjdk-alpine:${{ matrix.version }} .
   buildx-musl:
     runs-on: ubuntu-latest
@@ -83,7 +77,7 @@ jobs:
         run: echo ${{ steps.buildx.outputs.platforms }}
       -
         name: Install yq (mikefarah, go)
-        run: sudo su -c 'wget https://github.com/mikefarah/yq/releases/download/3.4.1/yq_linux_amd64 -O /usr/bin/yq && chmod +x /usr/bin/yq'
+        run: sudo su -c 'wget https://github.com/mikefarah/yq/releases/download/4.44.1/yq_linux_amd64 -O /usr/bin/yq && chmod +x /usr/bin/yq'
       -
         name: Run Buildx (${{ matrix.version }}-glibc)
         run: |
