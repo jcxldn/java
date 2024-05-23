@@ -40,12 +40,18 @@ jobs:
           docker buildx build \
             --platform $(yq '.${{ matrix.version }}.arch' platform-matrix.yml) \
             --output "type=image,push=$([[ $GITHUB_REF == "refs/heads/master" ]] && echo true || echo false)" \
-            --build-arg ESUM=$(yq ".${{ matrix.version }}.esums.amd64" platform-matrix.yml) \
+            --build-arg ARM64_ESUM=$(yq ".${{ matrix.version }}.esums.arm64" platform-matrix.yml) \
+            --build-arg ARMV7_ESUM=$(yq ".${{ matrix.version }}.esums.armv7" platform-matrix.yml) \
+            --build-arg PPC64LE_ESUM=$(yq ".${{ matrix.version }}.esums.ppc64le" platform-matrix.yml) \
+            --build-arg S390X_ESUM=$(yq ".${{ matrix.version }}.esums.s390x" platform-matrix.yml) \
+            --build-arg AMD64_ESUM=$(yq ".${{ matrix.version }}.esums.amd64" platform-matrix.yml) \
             --build-arg ORG=$(yq ".${{ matrix.version }}.org" platform-matrix.yml) \
             --build-arg REPO=$(yq ".${{ matrix.version }}.repo" platform-matrix.yml) \
             --build-arg TYPE=$(yq ".${{ matrix.version }}.type" platform-matrix.yml) \
             --build-arg TAG=$(yq ".${{ matrix.version }}.tag" platform-matrix.yml) \
             --build-arg VERSION=$(yq ".${{ matrix.version }}.version" platform-matrix.yml) \
+            --build-arg JDK78FIX=$(yq ".${{ matrix.version }}.jdk78fix" platform-matrix.yml) \
+            --build-arg NEEDSJLINK=$(yq ".${{ matrix.version }}.needs-jlink" platform-matrix.yml) \
             -f Dockerfile.glibc -t jcxldn/openjdk-alpine:${{ matrix.version }} .
   buildx-musl:
     runs-on: ubuntu-latest
@@ -79,21 +85,15 @@ jobs:
         name: Install yq (mikefarah, go)
         run: sudo su -c 'wget https://github.com/mikefarah/yq/releases/download/v4.44.1/yq_linux_amd64 -O /usr/bin/yq && chmod +x /usr/bin/yq'
       -
-        name: Run Buildx (${{ matrix.version }}-glibc)
+        name: Run Buildx (${{ matrix.version }}-musl)
         run: |
           docker buildx build \
             --platform $(yq '.${{ matrix.version }}.arch' platform-matrix.yml) \
             --output "type=image,push=$([[ $GITHUB_REF == "refs/heads/master" ]] && echo true || echo false)" \
-            --build-arg ARM65_ESUM=$(yq ".${{ matrix.version }}.esums.arm64" platform-matrix.yml) \
-            --build-arg ARMV7_ESUM=$(yq ".${{ matrix.version }}.esums.armv7" platform-matrix.yml) \
-            --build-arg PPC64LE_ESUM=$(yq ".${{ matrix.version }}.esums.ppc64le" platform-matrix.yml) \
-            --build-arg S390X_ESUM=$(yq ".${{ matrix.version }}.esums.s390x" platform-matrix.yml) \
-            --build-arg AMD64_ESUM=$(yq ".${{ matrix.version }}.esums.amd64" platform-matrix.yml) \
+            --build-arg ESUM=$(yq ".${{ matrix.version }}.esums.arm64" platform-matrix.yml) \
             --build-arg ORG=$(yq ".${{ matrix.version }}.org" platform-matrix.yml) \
             --build-arg REPO=$(yq ".${{ matrix.version }}.repo" platform-matrix.yml) \
             --build-arg TYPE=$(yq ".${{ matrix.version }}.type" platform-matrix.yml) \
             --build-arg TAG=$(yq ".${{ matrix.version }}.tag" platform-matrix.yml) \
             --build-arg VERSION=$(yq ".${{ matrix.version }}.version" platform-matrix.yml) \
-            --build-arg JDK78FIX=$(yq ".${{ matrix.version }}.jdk78fix" platform-matrix.yml) \
-            --build-arg NEEDSJLINK=$(yq ".${{ matrix.version }}.needs-jlink" platform-matrix.yml) \
             -f Dockerfile.musl -t jcxldn/openjdk-alpine:${{ matrix.version }} .

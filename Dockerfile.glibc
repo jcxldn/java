@@ -131,6 +131,20 @@ RUN mkdir -p /lib /lib64 /usr/glibc-compat/lib/locale /usr/glibc-compat/lib64 /e
 	ln -sfn /lib/libc.musl-x86_64.so.1 /usr/glibc-compat/lib; \
 	}; \
 	;; \
+	riscv64) \
+	ESUM=$RISCV_ESUM; \
+	BINARY_URL="https://github.com/${ORG}/${REPO}/releases/download/${TAG}/${TYPE}_riscv64_linux_hotspot_${VERSION}.tar.gz"; \
+	ZLIB_URL='http://ports.ubuntu.com/ubuntu-ports/pool/main/z/zlib/zlib1g_1.2.11.dfsg-2ubuntu1_riscv64.deb'; \
+	GLIBC_ARCH='x86_64'; \
+	glibc_setup () { \
+	ln -s /usr/glibc-compat/lib/ld-linux-x86-64.so.2 /lib/ld-linux-x86-64.so.2; \
+	ln -s /usr/glibc-compat/lib/ld-linux-x86-64.so.2 /lib64/ld-linux-x86-64.so.2; \
+	ln -s /usr/glibc-compat/lib/ld-linux-x86-64.so.2 /usr/glibc-compat/lib64/ld-linux-x86-64.so.2; \
+	ln -s /usr/glibc-compat/etc/ld.so.cache /etc/ld.so.cache; \
+	ln -sfn /lib/libc.musl-x86_64.so.1 /usr/glibc-compat/lib; \
+	}; \
+	;; \
+
 	*) \
 	echo "Unsupported arch: ${ARCH}"; \
 	exit 1; \
