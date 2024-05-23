@@ -1,0 +1,31 @@
+FROM alpine:latest
+
+# Set env variables for java to work properly
+ENV JAVA_HOME=/opt/java/openjdk \
+    PATH="/opt/java/openjdk/bin:$PATH"
+
+ARG ESUM
+ARG ORG
+ARG REPO
+ARG TYPE
+ARG TAG
+ARG VERSION
+
+RUN apk add --no-cache --virtual .fetch-deps curl binutils; \
+    ARCH="$(apk --print-arch)"; \
+    BINARY_URL="https://github.com/${ORG}/${REPO}/releases/download/${TAG}/${TYPE}_x64_alpine-linux_hotspot_${VERSION}.tar.gz"; \
+    # Download OpenJDK
+    echo "Downloading OpenJDK with URL: $BINARY_URL"; \
+    curl -LfsSo /tmp/openjdk.tar.gz $BINARY_URL; \
+    echo "Verifing download with checksum: $ESUM"; \
+    echo "${ESUM} */tmp/openjdk.tar.gz" | sha256sum -c -; \
+    mkdir -p /opt/java/openjdk; \
+    cd /opt/java/openjdk; \
+    tar -xf /tmp/openjdk.tar.gz --strip-components=1; \
+    # Cleaning up...
+    apk del --purge .fetch-deps; \
+    rm -rf /var/cache/apk/*; \
+    rm -rf /tmp/openjdk.tar.gz; \
+    echo "Done!"; \
+    cd /; \
+    java -version;
