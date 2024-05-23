@@ -1,6 +1,7 @@
 # JCX Matrix-Compatible Dockerfile
 
-FROM alpine:latest
+# https://github.com/sparklemotion/sqlite3-ruby/issues/434
+FROM alpine:3.18
 
 # Set env variables for java to work properly
 ENV JAVA_HOME=/opt/java/openjdk \
